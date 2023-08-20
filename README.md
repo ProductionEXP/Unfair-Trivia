@@ -12,10 +12,10 @@ In the game of unfair tivia you do not know how many points each question is wor
 - After a question is picked it is removed from the board no matter if they get it right or wrong
 - Team numbers either go in ascending or descending order
     - Ascending, Ex. 1 > 2 | Descending, Ex. 2 > 1
-- Once all questions are picked, you enter endgame, the game is over now time to determin a winner [Endgame]()
+- Once all questions are picked, you enter endgame, the game is over now time to determin a winner [Endgame](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#endgame)
 
 ## Setup
-Either download the program from the green code button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your spescifided location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you are ready to start, double click the .py file (main.py), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](), the "(int.) " before your cursor tells you what type of input is required.
+Either download the program from the green code button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your spescifided location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you are ready to start, double click the .py file (main.py), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#addingchanging-questions), the "(int.) " before your cursor tells you what type of input is required.
 | Tag       | Expination                    | Example   |
 | --------- | ----------------------------- | --------- |
 | (int.)    | Integer                       | 1         |
