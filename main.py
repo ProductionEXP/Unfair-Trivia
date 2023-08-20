@@ -1,26 +1,29 @@
 searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1
 
 import os
-import random
 import json
 
 if os.name == 'nt':
     main = os.path.dirname(__file__)
-    question = os.path.join(main, 'questions.json')
-    gridfile = os.path.join(main, 'grid.txt')
-    teaminfo = os.path.join(main, 'teaminfo\\')
+    question = os.path.join(main, 'Data\\questions.json')
+    gridfile = os.path.join(main, 'Data\\grid.txt')
+    teaminfo = os.path.join(main, 'Data\\teaminfo\\')
     CleanScreen = 'cls'
 
 elif os.name == 'posix':
-    question = 'questions.json'
-    grid = 'grid.txt'
-    teaminfo = 'teaminfo\\'
+    question = 'Data\\questions.json'
+    grid = 'Data\\grid.txt'
+    teaminfo = 'Data\\teaminfo\\'
     CleanScreen = 'clear'
 
-def cs():
+else:
+    print('OS Not supported')
+    exit()
+
+def cs() -> None:
     os.system(CleanScreen)
 
-def newtable(gridfile, columns, rows, pickednums, rowcylce = 0, columncylce = 0, num = 1):
+def newtable(gridfile: str, columns: int, rows: int, pickednums: list | None = [], rowcylce: int | None = 0, columncylce: int | None = 0, num: int | None = 1) -> None:
     with open(gridfile, 'w') as openfile:
         while int(rowcylce) < int(columns):
             while int(columncylce) < int(rows):
@@ -33,13 +36,19 @@ def newtable(gridfile, columns, rows, pickednums, rowcylce = 0, columncylce = 0,
             openfile.writelines('\n')
         openfile.close
     
-def numofquestionsremain(numofquestions, pickednums):
+def numofquestionsremain(numofquestions: int, pickednums: list | None = []) -> int:
     return numofquestions - len(pickednums) 
 
-def printtable(gridfile):
+def printtable(gridfile: str) -> None:
     with open(gridfile, 'r') as openfile:
         openfile.seek(0)
         print(openfile.read())
+
+def printteams(teaminfo: str, numofteams: int, doneteams: int | None = 1) -> None:
+    while int(doneteams) <= int(numofteams):
+        with open(str(teaminfo) + 'team' +str(doneteams) + '.txt', 'r') as openfile:
+            print('Team ' + str(doneteams) + ': ' + str(openfile.read()))
+        doneteams = doneteams + 1
     
 cs()    
 
@@ -161,20 +170,27 @@ with open(question, 'r') as openfile:
             printtable(gridfile)
             print('\nTeam ' + str(currentteam) + ' is up!\nWhat question do they pick?')
             teamnumpicked = input('(int.) ')
-            if teamnumpicked.isnumeric():
-                if int(teamnumpicked) <= int(numofquestions):
-                    if int(teamnumpicked) not in pickednums:
-                        teamnumpicked = teamnumpicked
-                        temptf = True
+            if teamnumpicked.lower() != 'score':
+                if teamnumpicked.isnumeric():
+                    if int(teamnumpicked) <= int(numofquestions):
+                        if int(teamnumpicked) not in pickednums:
+                            teamnumpicked = teamnumpicked
+                            temptf = True
+                        else:
+                            print('Number was already picked, try again')
+                            temptf = False
                     else:
-                        print('Number was already picked, try again')
+                        print('Question does not exist, try again')
                         temptf = False
                 else:
-                    print('Question does not exist, try again')
+                    print('That is not a number, try again')
                     temptf = False
             else:
-                print('That is not a number, try again')
-                temptf = False
+                printteams(teaminfo, numofteams)
+                input('\n\nPress enter to continue')
+                cs()
+                continue
+            
         temptf = False
 
         cs()
@@ -232,22 +248,22 @@ with open(question, 'r') as openfile:
         temptf = False
 
         if teamquescorrect == True and korg == True:
-            with open(str(teaminfo) + 'team' +str(currentteam) + '.txt', 'r') as openfile:
+            with open(str(teaminfo) + 'team' + str(currentteam) + '.txt', 'r') as openfile:
                 prevscore = openfile.read()
                 openfile.close()
             newscore = int(prevscore) + int(questions[int(teamnumpicked)-1]['points'])
 
-            with open(str(teaminfo) + 'team' +str(currentteam) + '.txt', 'w') as openfile:
+            with open(str(teaminfo) + 'team' + str(currentteam) + '.txt', 'w') as openfile:
                 openfile.write(str(newscore))
                 openfile.close()
 
         elif teamquescorrect == True and korg == False:
-            with open(str(teaminfo) + 'team' +str(giveteam) + '.txt', 'r') as openfile:
+            with open(str(teaminfo) + 'team' + str(giveteam) + '.txt', 'r') as openfile:
                 prevscore = openfile.read()
                 openfile.close()
             newscore = int(prevscore) + int(questions[int(teamnumpicked)-1]['points'])
 
-            with open(str(teaminfo) + 'team' +str(giveteam) + '.txt', 'w') as openfile:
+            with open(str(teaminfo) + 'team' + str(giveteam) + '.txt', 'w') as openfile:
                 openfile.write(str(newscore))
                 openfile.close()
         
@@ -266,8 +282,4 @@ with open(question, 'r') as openfile:
 
 cs()
 print('Endgame!\nCurrent scores are:')
-doneteams = 1
-while int(doneteams) <= int(numofteams):
-    with open(str(teaminfo) + 'team' +str(doneteams) + '.txt', 'r') as openfile:
-        print('Team ' + str(doneteams) + ': ' + str(openfile.read()))
-    doneteams = doneteams + 1
+printteams(teaminfo, numofteams)
