@@ -1,8 +1,15 @@
 [
     {
         "question#": 1,
-        "question": "",
-        "answer": ""
+        "question": "What is 1+1?",
+        "answer": "2",
+        "points": -5
+    },
+    {
+        "question#": 2,
+        "question": "What is the sqrt of 4?",
+        "answer": "2",
+        "points": 5
     },
     {
         "question#": "done"
