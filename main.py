@@ -351,15 +351,15 @@ with open(question, 'r') as openfile:
         # Picked earlier, we also must make sure that the next team
         # Exsits
         if direction == 'a':
-            if int(currentteam) != numofteams:
+            if int(currentteam) != int(numofteams):
                 currentteam = int(currentteam) + 1
-            elif int(currentteam) == numofteams:
+            elif int(currentteam) == int(numofteams):
                 currentteam = 1
         elif direction == 'd':
             if int(currentteam) != 1:
                 currentteam = int(currentteam) - 1
             elif int(currentteam) == 1:
-                currentteam = numofteams
+                currentteam = int(numofteams)
 
 # After all of the questions have been picked we must
 # Display all of the teams scores before the program ends
