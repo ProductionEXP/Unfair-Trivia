@@ -366,3 +366,4 @@ with open(question, 'r') as openfile:
 cs()
 print('Endgame!\nCurrent scores are:')
 printteams(teaminfo, numofteams)
+input('Press endter to exit')
