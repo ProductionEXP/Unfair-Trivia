@@ -190,7 +190,7 @@ temptf = False
 
 # Defines the first team
 currentteam = startteam
-with open(question, 'r') as openfile:
+with open(question, 'r') as openfile:   
     questions = json.load(openfile)
 
     # Starts a loop around all of the teams untill there are no questions left
@@ -198,7 +198,7 @@ with open(question, 'r') as openfile:
 
         # Resets the values, we dont need to do this 
         # Just an extra layer of protection
-        teamnumpicked = 0; korg = ''; temptf = False; giveteam = ''; keepgive = ''; teamquescorrect = ''; prevscore = 0
+        teamnumpicked = 0; korg = ''; temptf = False; giveteam = ''; keepgive = ''; teamquescorrect = ''; prevscore = 0; override = False; useranwser = ''
 
         # Generates a new table after every cycle 
         # to remove the last question picked
@@ -216,28 +216,31 @@ with open(question, 'r') as openfile:
         while temptf != True:
             print('Avalible questions:')
             printtable(gridfile)
-            print('\nTeam ' + str(currentteam) + ' is up!\nWhat question do they pick?')
+            print('\nTeam ' + str(currentteam) + ' is up!\nWhat question do you pick?')
             teamnumpicked = input('(int.) ')
-            if teamnumpicked.lower() != 'score':
-                if teamnumpicked.isnumeric():
-                    if int(teamnumpicked) <= int(numofquestions):
-                        if int(teamnumpicked) not in pickednums:
-                            teamnumpicked = teamnumpicked
-                            temptf = True
+            if teamnumpicked.lower() != 'madd':
+                if teamnumpicked.lower() != 'score':
+                    if teamnumpicked.isnumeric():
+                        if int(teamnumpicked) <= int(numofquestions):
+                            if int(teamnumpicked) not in pickednums:
+                                teamnumpicked = teamnumpicked
+                                temptf = True
+                            else:
+                                print('Number was already picked, try again')
+                                temptf = False
                         else:
-                            print('Number was already picked, try again')
+                            print('Question does not exist, try again')
                             temptf = False
                     else:
-                        print('Question does not exist, try again')
+                        print('That is not a number, try again')
                         temptf = False
                 else:
-                    print('That is not a number, try again')
-                    temptf = False
+                    printteams(teaminfo, numofteams)
+                    input('\n\nPress enter to continue')
+                    cs()
+                    continue
             else:
-                printteams(teaminfo, numofteams)
-                input('\n\nPress enter to continue')
-                cs()
-                continue
+                print() # To manully add points
         temptf = False
         cs()
 
@@ -248,7 +251,7 @@ with open(question, 'r') as openfile:
         # Make sure the input is acceptable
         while temptf != True:
             print('Team ' + str(currentteam) + ' picked question ' + str(teamnumpicked))
-            print('\nDo they want to keep(k) or give away(g) the points?')
+            print('\nDo you want to keep(k) or give away(g) the points?')
             korg = input('(k/g) ')
             if korg.lower() == 'k':
                 temptf = True
@@ -300,19 +303,8 @@ with open(question, 'r') as openfile:
         while temptf != True:
             print('Team ' + str(currentteam) + ' picked question ' + str(teamnumpicked) + ' - And are ' + str(keepgive))
             print('\n\nQuestion: \n' + str(questions[int(teamnumpicked)-1]['question']))
-            anwsera = questions[int(teamnumpicked)-1]['answer']
-            print('\nAnswer: \n' + str(anwsera[0]))
-            print('\nDid they get the question right?')
-            teamquescorrect = input('(y/n) ')
-            if teamquescorrect.lower() == 'y':
-                teamquescorrect = True 
-                temptf = True
-            elif teamquescorrect.lower() == 'n':
-                teamquescorrect = False
-                temptf = True
-            else:
-                print('That is not a acceptable input, try again')
-                temptf = False
+            useranwser = input('(anw) ') 
+
         temptf = False
 
         # After the team has anwsered and we know if they got it right or 
