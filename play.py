@@ -66,7 +66,7 @@ def isint(number: any) -> bool:
         print('That is not a integer, try again')
         return False
     
-# Addes a score to a team
+# Addes a score to a team    
 def addscore(team: int, teamnumpicked: int, addpoints: int | None = 0, teaminfo: str | None = teaminfo, question: str | None = question, prevscore = 0, newscore = 0, ) -> None:
     with open(question, 'r') as openfile:   
         questions = json.load(openfile)
@@ -192,11 +192,13 @@ temptf = False
 
 # Defines first team
 currentteam = startteam
-with open(question, 'r') as openfile:
+with open(question, 'r') as openfile:   
     questions = json.load(openfile)
+
     while int(numofquestions - len(pickednums)) > 0:
         # Resets all values
-        teamnumpicked = 0; korg = ''; temptf = False; giveteam = ''; keepgive = ''; teamquescorrect = ''; prevscore = 0
+        teamnumpicked = 0; korg = ''; temptf = False; giveteam = ''; keepgive = ''; prevscore = 0; override = False; useranwser = ''; anwsera = []
+        teampointsadd = 0; teampointsaddnum = 0; temptf2 = False
 
         # Generates new table
         newtable(gridfile, columns, rows, pickednums)
@@ -206,25 +208,49 @@ with open(question, 'r') as openfile:
         while temptf != True:
             print('Avalible questions:')
             printtable(gridfile)
-            print('\nTeam ' + str(currentteam) + ' is up!\nWhat question do they pick?')
+            print('\nTeam ' + str(currentteam) + ' is up!\nWhat question do you pick?')
             teamnumpicked = input('(int.) ')
-            if teamnumpicked.lower() != 'score':
-                if isint(teamnumpicked):
-                    if int(teamnumpicked) <= int(numofquestions):
-                        if int(teamnumpicked) not in pickednums:
-                            teamnumpicked = teamnumpicked
-                            temptf = True
+            if teamnumpicked.lower() != 'madd':
+                if teamnumpicked.lower() != 'score':
+                    if isint(teamnumpicked):
+                        if int(teamnumpicked) <= int(numofquestions):
+                            if int(teamnumpicked) not in pickednums:
+                                teamnumpicked = teamnumpicked
+                                temptf = True
+                            else:
+                                print('Number was already picked, try again')
+                                temptf = False
                         else:
-                            print('Number was already picked, try again')
+                            print('Question does not exist, try again')
                             temptf = False
-                    else:
-                        print('Question does not exist, try again')
-                        temptf = False
+                else:
+                    # Prints all team's scores 
+                    printteams(teaminfo, numofteams)
+                    input('\n\nPress enter to continue')
+                    cs()
+                    continue
             else:
-                # Prints all team's scores 
-                printteams(teaminfo, numofteams)
-                input('\n\nPress enter to continue')
                 cs()
+                # Manully adding points 
+                while temptf2 != True:
+                    print('What team are we adding points to?')
+                    teampointsadd = input('(int.) ')
+                    if isint(teampointsadd):
+                        if int(teampointsadd) <= int(numofteams) and int(teampointsadd) > 0:
+                            temptf2 = True
+                            teampointsadd = int(teampointsadd)
+                        else:
+                            print('That it not a team, try again')
+                            temptf2 = False
+                temptf2 = False
+                cs()
+
+                while temptf2 != True:
+                    print('How many points are we adding or removing?')
+                    teampointsaddnum = input('(int.) ')
+                    if isint(teampointsaddnum) == True:
+                        addscore(teampointsadd, 'add', int(teampointsaddnum))
+                        temptf2 = True
                 continue
         temptf = False
         cs()
@@ -232,7 +258,7 @@ with open(question, 'r') as openfile:
         # Figure out if the team is keeping or giving the points
         while temptf != True:
             print('Team ' + str(currentteam) + ' picked question ' + str(teamnumpicked))
-            print('\nDo they want to keep(k) or give away(g) the points?')
+            print('\nDo you want to keep(k) or give away(g) the points?')
             korg = input('(k/g) ')
             if korg.lower() == 'k':
                 temptf = True
@@ -270,15 +296,13 @@ with open(question, 'r') as openfile:
         while temptf != True:
             print('Team ' + str(currentteam) + ' picked question ' + str(teamnumpicked) + ' - And are ' + str(keepgive))
             print('\n\nQuestion: \n' + str(questions[int(teamnumpicked)-1]['question']))
-            anwsera = questions[int(teamnumpicked)-1]['answer']
-            print('\nAnswer: \n' + str(anwsera[0]))
-            print('\nDid they get the question right?')
-            teamquescorrect = input('(y/n) ')
-            if teamquescorrect.lower() == 'y':
-                teamquescorrect = True 
+            useranwser = input('(anw.) ')
+            anwsera = questions[int(teamnumpicked)-1]['answer'] 
+            if useranwser.lower() in anwsera:
+                useranwser = True 
                 temptf = True
-            elif teamquescorrect.lower() == 'n':
-                teamquescorrect = False
+            elif useranwser.lower() not in anwsera:
+                useranwser = False
                 temptf = True
             else:
                 print('That is not a acceptable input, try again')
@@ -286,10 +310,10 @@ with open(question, 'r') as openfile:
         temptf = False
 
         # Updates the correct team's score for either keeping or giving points
-        if teamquescorrect == True and korg == True:
+        if useranwser == True and korg == True:
             addscore(currentteam, teamnumpicked)
 
-        elif teamquescorrect == True and korg == False:
+        elif useranwser == True and korg == False:
             addscore(giveteam, teamnumpicked)
 
         # Remove the question from the table
@@ -306,7 +330,7 @@ with open(question, 'r') as openfile:
                 currentteam = int(currentteam) - 1
             elif int(currentteam) == 1:
                 currentteam = int(numofteams)
-
+                
 # Display fianl scores
 cs()
 print('Endgame!\nCurrent scores are:')
