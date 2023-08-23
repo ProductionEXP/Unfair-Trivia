@@ -22,12 +22,12 @@ Either download the program from the green code button, [here](https://github.co
 | (y/n)     | Yes(y) or No(n)                   | y         |
 | (a/d)     | Ascending(a) or Descending(d)     | a         |
 | (k/g)     | Keep(k) or Give (g)               | k         |
-| (anw)     | User anwser, can be int or str    | k         |
+| (anw.)    | User anwser, can be int or str    | USA       |
 
 After every input you must press enter to continue. Before it askes you ```How many teams are playing?```, it will show you the current table and how many questions remain. After you enter the number of teams playing it will ask what team is starting, this number must be less than or equal to the number of teams. After that you chose the direction, once that is done setup is compleate.
 
 ## Running The Game
-Once setup is compleate the game will display available questions and what teams is up to pick a question. After the team picks a question, it will then display the team # and the question #, then ask if they are keeping or giving the points, if they are giving it will then ask the team that they are giving the points to. After that it will display What team is up, what question, if they are keeping or giving the points, and to who, then what the question is and it's answer, it will then ask you if they got the question correct. This prosses repeats until there is no more questions. 
+Once setup is compleate the game will display available questions and what teams is up to pick a question. After the team picks a question, it will then display the team # and the question #, then ask if they are keeping or giving the points, if they are giving it will then ask the team that they are giving the points to. After that it will display What team is up, what question, if they are keeping or giving the points, and to who, then what the question is and it's answer, it will then ask you if they got the question correct. It is within your own judgement if the anwser is correct, the computer will only display one possible anwser. This prosses repeats until there is no more questions. 
 
 If at any point you want to see the scores of the teams, when it asks ```What question do they pick?``` just type ```score```, and it will display the scores.
 
@@ -174,9 +174,7 @@ When running in player mode (play.py vs main.py) to increase accuracy you can ha
     }
 ]
 ```
-###### This is our current file
-
-Under the anwser part of each question you can have multiple anwsers, here is an example:
+If we take our previous file, under the anwser part of each question you can have multiple anwsers, here is an example:
 
 ```
     {
@@ -216,3 +214,26 @@ We can do this for any question, if this is added to our previous list it would 
 ```
 
 If adding text based anwsers, you can not use capital letters otherwise the anwser will always be wrong.
+
+---
+## Versions
+
+### [V1](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V1)
+###### Release Date: 8/21/2023
+###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP) 
+## 
+
+First release of the "game". Just the base.
+
+---
+### [V2 - The game update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2)
+###### Release Date: 8/23/2023
+###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
+##
+In this update I added the ability to "play" the game, in the previous version you could only run the game for another group of people, but in this update I added ```play.py``` it is an adtaptaion of the game ment to be played, see  [Playing the game](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#playing-the-game). 
+
+---
+### [V3 - ?](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V3)
+###### Release Date: ?
+###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
+##
