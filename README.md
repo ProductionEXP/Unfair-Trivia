@@ -239,8 +239,13 @@ If adding text based anwsers, you can not use capital letters otherwise the anws
 First release of the "game". Just the base.
 
 ---
+<<<<<<< Updated upstream
 ### [V2 - The game update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2)
 ###### Release Date: 8/22/2023
+=======
+### [V2 - The game update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2.1)
+###### Release Date: 8/23/2023
+>>>>>>> Stashed changes
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
 In this update I added the ability to "play" the game, in the previous version you could only run the game for another group of people, but in this update I added ```play.py``` it is an adtaptaion of the game ment to be played, see  [Playing the game](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#playing-the-game). 
