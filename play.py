@@ -1,4 +1,4 @@
-searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1
+searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0
 
 import os
 import json
@@ -8,13 +8,13 @@ if os.name == 'nt':
     main = os.path.dirname(__file__)
     question = os.path.join(main, 'Data\\questions.json')
     gridfile = os.path.join(main, 'Data\\grid.txt')
-    teaminfo = os.path.join(main, 'Data\\teaminfo\\')
+    scores = os.path.join(main, 'Data\\scores.json')
     CleanScreen = 'cls'
 
 elif os.name == 'posix':
     question = 'Data\\questions.json'
     grid = 'Data\\grid.txt'
-    teaminfo = 'Data\\teaminfo\\'
+    scores = 'Data\\scores.json'
     CleanScreen = 'clear'
 
 else:
@@ -46,11 +46,12 @@ def printtable(gridfile: str) -> None:
         print(openfile.read())
 
 # Prints current lits of teams and scores
-def printteams(teaminfo: str, numofteams: int, doneteams: int | None = 1) -> None:
-    while int(doneteams) <= int(numofteams):
-        with open(str(teaminfo) + 'team' +str(doneteams) + '.txt', 'r') as openfile:
-            print('Team ' + str(doneteams) + ': ' + str(openfile.read()))
-        doneteams = doneteams + 1
+def printteams(numofteams: int, doneteams: int | None = 1, scores: str | None = scores) -> None:
+    with open(scores) as openfile:
+        scoresnteams = json.load(openfile)
+        while int(doneteams) <= int(numofteams):
+            print('Team ' + scoresnteams[doneteams-1]['team'] + ': ' + scoresnteams[doneteams-1]['score'])
+            doneteams = doneteams + 1
 
 # Checks if a number is and integer
 def isint(number: any) -> bool:
@@ -66,22 +67,48 @@ def isint(number: any) -> bool:
         print('That is not a integer, try again')
         return False
     
-# Addes a score to a team    
-def addscore(team: int, teamnumpicked: int, addpoints: int | None = 0, teaminfo: str | None = teaminfo, question: str | None = question, prevscore = 0, newscore = 0, ) -> None:
-    with open(question, 'r') as openfile:   
-        questions = json.load(openfile)
-        with open(str(teaminfo) + 'team' + str(team) + '.txt', 'r') as openfile:
-            prevscore = openfile.read()
-            openfile.close()
-        if teamnumpicked != 'add':
-            newscore = int(prevscore) + int(questions[int(teamnumpicked)-1]['points'])
-        else:
-            newscore = addpoints
-
-        with open(str(teaminfo) + 'team' + str(team) + '.txt', 'w') as openfile:
-            openfile.write(str(newscore))
-            openfile.close()
+# Generates score file
+def genscoerfile(numofteams: int | None = numofteams, teamsdone: int | None = 0, scores: str | None = scores) -> None:
+    with open(scores, 'w') as openfile:
+        openfile.write('[\n')
+        while int((teamsdone+1)) < int(numofteams):
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "0"}'
+            jsondata = json.loads(scoreset)
+            openfile.write(json.dumps(jsondata, indent=4))
+            openfile.write(',\n')
+            teamsdone = teamsdone+1
+        if int((teamsdone+1)) == int(numofteams):
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "0"}'
+            jsondata = json.loads(scoreset)
+            openfile.write(json.dumps(jsondata, indent=4))
+        openfile.write('\n]')
         openfile.close()
+    with open(scores) as f:
+        data = json.load(f)
+    with open(scores, 'w') as f:
+        json.dump(data, f, indent=4)
+    
+# Addes a score to a team    
+def addscorejson(team: int, teamnumpicked: int, scores: str | None = scores, question: str | None = question) -> str:
+    with open(scores) as f:
+        data = json.load(f)
+        with open(question, 'r') as openfile:   
+            questions = json.load(openfile)
+            nscore = int(data[int(team)-1]['score']) +  int(questions[int(teamnumpicked)-1]['points'])
+        data[int(team)-1]['score'] = str(str(data[int(team)-1]['score']).replace(str(data[int(team)-1]['score']), str(nscore)))
+    with open(scores, 'w') as f:
+        json.dump(data, f, indent=4)
+
+# Force add points to a team
+def maddscorejson(team: int, addscore: int, scores: str | None = scores, question: str | None = question) -> None:
+    with open(scores) as f:
+        data = json.load(f)
+        with open(question, 'r') as openfile:   
+            questions = json.load(openfile)
+            nscore = int(data[int(team)-1]['score']) +  int(addscore)
+        data[int(team)-1]['score'] = str(str(data[int(team)-1]['score']).replace(str(data[int(team)-1]['score']), str(nscore)))
+    with open(scores, 'w') as f:
+        json.dump(data, f, indent=4)
 
 # Figures out how many questions there are
 with open(question, 'r') as openfile:
@@ -161,11 +188,7 @@ while temptf != True:
 temptf = False
 
 # Generate a score file for each team
-while int(dt) <= int(numofteams):
-    with open(str(teaminfo) + 'team' +str(dt) + '.txt', 'w') as openfile:
-        openfile.write('0')
-        openfile.close()
-    dt = dt + 1
+genscoerfile(numofteams)
 
 # Figure out the starting team
 while temptf != True:
@@ -225,7 +248,7 @@ with open(question, 'r') as openfile:
                             temptf = False
                 else:
                     # Prints all team's scores 
-                    printteams(teaminfo, numofteams)
+                    printteams(numofteams)
                     input('\n\nPress enter to continue')
                     cs()
                     continue
@@ -249,7 +272,7 @@ with open(question, 'r') as openfile:
                     print('How many points are we adding or removing?')
                     teampointsaddnum = input('(int.) ')
                     if isint(teampointsaddnum) == True:
-                        addscore(teampointsadd, 'add', int(teampointsaddnum))
+                        maddscorejson(teampointsadd, teampointsaddnum)
                         temptf2 = True
                 continue
         temptf = False
@@ -311,10 +334,10 @@ with open(question, 'r') as openfile:
 
         # Updates the correct team's score for either keeping or giving points
         if useranwser == True and korg == True:
-            addscore(currentteam, teamnumpicked)
+            addscorejson(currentteam, teamnumpicked)
 
         elif useranwser == True and korg == False:
-            addscore(giveteam, teamnumpicked)
+            addscorejson(giveteam, teamnumpicked)
 
         # Remove the question from the table
         pickednums.append(int(teamnumpicked))
@@ -334,5 +357,5 @@ with open(question, 'r') as openfile:
 # Display fianl scores
 cs()
 print('Endgame!\nCurrent scores are:')
-printteams(teaminfo, numofteams)
+printteams(numofteams)
 input('Press endter to exit')
