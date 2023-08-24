@@ -90,8 +90,8 @@ def addscorejson(team: int, teamnumpicked: int, scores: str | None = scores, que
         data = json.load(f)
         with open(question, 'r') as openfile:   
             questions = json.load(openfile)
-            nscore = int(data[team-1]['score']) +  int(questions[int(teamnumpicked)-1]['points'])
-        data[team-1]['score'] = str(str(data[team-1]['score']).replace(str(data[team-1]['score']), str(nscore)))
+            nscore = int(data[int(team)-1]['score']) +  int(questions[int(teamnumpicked)-1]['points'])
+        data[int(team)-1]['score'] = str(str(data[int(team)-1]['score']).replace(str(data[int(team)-1]['score']), str(nscore)))
     with open(scores, 'w') as f:
         json.dump(data, f, indent=4)
 

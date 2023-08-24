@@ -32,7 +32,20 @@ Once setup is compleate the game will display available questions and what teams
 If at any point you want to see the scores of the teams, when it asks ```What question do they pick?``` just type ```score```, and it will display the scores.
 
 ## Endgame
-Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```Data\teaminfo\``` in here you will find .txt files for every team, the number stored in there is the score of that team.
+Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```Data\scores.json``` in here you will find a data set that has the team number and score for that team. It will look somthing like this:
+```
+[
+    {
+        "team": "1",
+        "score": "0"
+    },
+    {
+        "team": "2",
+        "score": "0"
+    }
+]
+```
+The team and score for every team is dispalyed.
 
 This is where the programs stops it's job and you have to do yours.
 
