@@ -83,6 +83,10 @@ def genscoerfile(numofteams: int | None = numofteams, teamsdone: int | None = 0,
             openfile.write(json.dumps(jsondata, indent=4))
         openfile.write('\n]')
         openfile.close()
+    with open(scores) as f:
+        data = json.load(f)
+    with open(scores, 'w') as f:
+        json.dump(data, f, indent=4)
 
 # Addes a score to a team
 def addscorejson(team: int, teamnumpicked: int, scores: str | None = scores, question: str | None = question) -> str:
@@ -259,7 +263,7 @@ with open(question, 'r') as openfile:
                 print('\nWho is team ' + str(currentteam) + ' giving the points to?')
                 giveteam = input('(int.) ')
                 if isint(giveteam):
-                    if giveteam <= numofteams:
+                    if int(giveteam) <= int(numofteams):
                         temptf = True
                     else:
                         print('That is not a team, try again')

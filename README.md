@@ -240,10 +240,17 @@ First release of the "game". Just the base.
 
 ---
 ### [V2 - The game update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2)
-###### Release Date: 8/23/2023
+###### Release Date: 8/22/2023
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
 In this update I added the ability to "play" the game, in the previous version you could only run the game for another group of people, but in this update I added ```play.py``` it is an adtaptaion of the game ment to be played, see  [Playing the game](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#playing-the-game). 
+
+---
+### [V2.1 - Json Score Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2)
+###### Release Date: 8/24/2023
+###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
+##
+In this update I added a JSON system for scores vs individual .txt files for every team. This was added to  bot ```main.py``` and ```play.py```.
 
 ---
 ### [V3 - ?](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V3)
