@@ -4,6 +4,9 @@
 ###### Idea by: [Gary K. Herberger Young Scholars Academy](https://herbergeracademy.asu.edu)
 
 In the game of unfair tivia you do not know how many points each question is worth, it could be a positve or negitive number. You also do not know what the criteria is to win,  it could be who ever has the lowest score.
+## Repository Info
+
+This repo IS maintaianed, please submit an issue if you have a request or a bug.
 
 ## Rules
 

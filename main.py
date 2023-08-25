@@ -67,6 +67,15 @@ def isint(number: any) -> bool:
         print('That is not a integer, try again')
         return False
     
+# Checks if an input is y or n
+def yesorno(yorn: str, y: str | None = 'y', n: str | None = 'n') -> bool:
+    if yorn.lower == n:
+        return False
+    elif yorn.lower == y:
+        return True
+    else:
+        print(str(yorn) + ' Is not a accepted input, try again')
+    
 # Generates score file
 def genscoerfile(numofteams: int | None = numofteams, teamsdone: int | None = 0, scores: str | None = scores) -> None:
     with open(scores, 'w') as openfile:
@@ -147,15 +156,12 @@ while grid != True:
     print('Grid is: ' + str(columns) + 'x' + str(rows))
     print('Please confirm\nenter "y" for yes\nenter "n" to enter new values')
     yorn = input('(y/n) ')
-
-    if yorn.lower() == 'n':
+    if yesorno(yorn):
+        grid = True
+    else:
         grid1 = False
         grid2 = False 
         continue
-    elif yorn.lower() == 'y':
-        grid = True
-    else:
-        print(str(yorn) + ' Is not a accepted value, try again')
 
 cs()
 
@@ -191,15 +197,12 @@ temptf = False
 while temptf != True:
     print('\nWhat direction are we going in?\nAscending(a), Ex. 1 > 2\nDescending(d), Ex. 2 > 1')
     direction = input('(a/d) ')
-    if direction.lower() == 'a':
+    if yesorno(direction, 'a', 'd'):
         direction = 'a'
         temptf = True
-    elif direction.lower() == 'd':
+    else:
         direction = 'd'
         temptf = True
-    else:
-        print('That is not a acceptable input, try again')
-        temptf = False
 temptf = False
 
 # Defines first team
@@ -246,15 +249,12 @@ with open(question, 'r') as openfile:
             print('Team ' + str(currentteam) + ' picked question ' + str(teamnumpicked))
             print('\nDo they want to keep(k) or give away(g) the points?')
             korg = input('(k/g) ')
-            if korg.lower() == 'k':
+            if yesorno(korg, 'k', 'g'):
                 temptf = True
                 korg = True
-            elif korg.lower() == 'g':
+            else:
                 temptf = True
                 korg = False
-            else:
-                print('That is not a acceptable input, try again')
-                temptf = False
         temptf = False
 
         # If the team is giving the points, figure out to who
@@ -286,15 +286,12 @@ with open(question, 'r') as openfile:
             print('\nAnswer: \n' + str(anwsera[0]))
             print('\nDid they get the question right?')
             teamquescorrect = input('(y/n) ')
-            if teamquescorrect.lower() == 'y':
+            if yesorno(teamquescorrect):
                 teamquescorrect = True 
                 temptf = True
-            elif teamquescorrect.lower() == 'n':
+            else:
                 teamquescorrect = False
                 temptf = True
-            else:
-                print('That is not a acceptable input, try again')
-                temptf = False
         temptf = False
 
         # Updates the correct team's score for either keeping or giving points
