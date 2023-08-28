@@ -69,9 +69,9 @@ def isint(number: any) -> bool:
     
 # Checks if an input is y or n
 def yesorno(yorn: str, y: str | None = 'y', n: str | None = 'n') -> bool:
-    if yorn.lower() == n:
+    if yorn.lower == n:
         return False
-    elif yorn.lower() == y:
+    elif yorn.lower == y:
         return True
     else:
         print(str(yorn) + ' Is not a accepted input, try again')
