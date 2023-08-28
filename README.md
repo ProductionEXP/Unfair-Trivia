@@ -24,9 +24,7 @@ Either download the program from the green code button, [here](https://github.co
 | (int.)    | Integer                           | 1             |
 | (y/n)     | Yes(y) or No(n)                   | y             |
 | (a/d)     | Ascending(a) or Descending(d)     | a             |
-| (a/n)     | Adding or New                     | n             |
 | (k/g)     | Keep(k) or Give (g)               | k             |
-| (str.)    | Just a plain string of text       | Hello World   |
 | (anw.)    | User anwser, can be int or str    | USA           |
 
 After every input you must press enter to continue. Before it askes you ```How many teams are playing?```, it will show you the current table and how many questions remain. After you enter the number of teams playing it will ask what team is starting, this number must be less than or equal to the number of teams. After that you chose the direction, once that is done setup is compleate.
