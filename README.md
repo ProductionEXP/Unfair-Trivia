@@ -4,6 +4,9 @@
 ###### Idea by: [Gary K. Herberger Young Scholars Academy](https://herbergeracademy.asu.edu)
 
 In the game of unfair tivia you do not know how many points each question is worth, it could be a positve or negitive number. You also do not know what the criteria is to win,  it could be who ever has the lowest score.
+## Repository Info
+
+This repo IS maintaianed, please submit an issue if you have a request or a bug.
 
 ## Rules
 
@@ -16,13 +19,15 @@ In the game of unfair tivia you do not know how many points each question is wor
 
 ## Setup
 Either download the program from the green code button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your spescifided location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you are ready to start, double click the .py file (```main.py```), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#addingchanging-questions), the ```(int.) ``` before your cursor tells you what type of input is required.
-| Tag       | Expination                        | Example   |
-| --------- | --------------------------------- | --------- |
-| (int.)    | Integer                           | 1         |
-| (y/n)     | Yes(y) or No(n)                   | y         |
-| (a/d)     | Ascending(a) or Descending(d)     | a         |
-| (k/g)     | Keep(k) or Give (g)               | k         |
-| (anw.)    | User anwser, can be int or str    | USA       |
+| Tag       | Expination                        | Example       |
+| --------- | --------------------------------- | ------------- |
+| (int.)    | Integer                           | 1             |
+| (y/n)     | Yes(y) or No(n)                   | y             |
+| (a/d)     | Ascending(a) or Descending(d)     | a             |
+| (a/n)     | Adding or New                     | n             |
+| (k/g)     | Keep(k) or Give (g)               | k             |
+| (str.)    | Just a plain string of text       | Hello World   |
+| (anw.)    | User anwser, can be int or str    | USA           |
 
 After every input you must press enter to continue. Before it askes you ```How many teams are playing?```, it will show you the current table and how many questions remain. After you enter the number of teams playing it will ask what team is starting, this number must be less than or equal to the number of teams. After that you chose the direction, once that is done setup is compleate.
 
@@ -240,13 +245,13 @@ First release of the "game". Just the base.
 
 ---
 ### [V2 - The game update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2)
-###### Release Date: 8/22/2023
+###### Release Date: 8/23/2023
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
 In this update I added the ability to "play" the game, in the previous version you could only run the game for another group of people, but in this update I added ```play.py``` it is an adtaptaion of the game ment to be played, see  [Playing the game](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#playing-the-game). 
 
 ---
-### [V2.1 - Json Score Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2)
+### [V2.1 - Json Score Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V2.1)
 ###### Release Date: 8/24/2023
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
