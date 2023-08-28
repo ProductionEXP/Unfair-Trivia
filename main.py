@@ -258,11 +258,14 @@ while temptf != True:
             while temptf2 != True:
                 print('\nWhat team are you adding members to?')
                 teammemadd = input('(int.) ')
+                if teammemadd.lower() == 'exit':
+                    break 
                 if isint(teammemadd):
                     temptf2 = True
             temptf2 = False
             cs()
-            addnames(teammemadd)
+            if teammemadd.lower() != 'exit':
+                addnames(teammemadd)
         temptf = True
         cs()
     elif temp == False:
