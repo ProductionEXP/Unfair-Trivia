@@ -177,6 +177,7 @@ print('Number of questions: ' + str(numofquestions))
 
 # Has the user make a grid
 while grid != True:
+    temptf = False 
     while grid1 != True:
         print('How many rows do you want?')
         row = input('(int.) ')
@@ -208,15 +209,22 @@ while grid != True:
         continue
 
     # Has user confirm grid
-    print('Grid is: ' + str(columns) + 'x' + str(rows))
-    print('Please confirm\nenter "y" for yes\nenter "n" to enter new values')
-    yorn = input('(y/n) ')
-    if yesorno(yorn):
-        grid = True
-    else:
-        grid1 = False
-        grid2 = False 
-        continue
+    while temptf != True:
+        print('Grid is: ' + str(columns) + 'x' + str(rows))
+        print('Please confirm\nenter "y" for yes\nenter "n" to enter new values')
+        yorn = input('(y/n) ')
+        yorntf = yesorno(yorn)
+        if yorntf:
+            grid = True
+            temptf = True
+        elif yorntf == False:
+            grid1 = False
+            grid2 = False
+            temptf = True
+            continue
+        else:
+            temptf = False 
+    temptf = False 
 
 cs()
 
@@ -247,9 +255,9 @@ while temptf != True:
     temp = yesorno(addmem)
     if temp:
         while teammemadd.lower() != 'exit':
-            print('\nWhat team are you adding members to?')
-            teammemadd = input('(int.) ')
             while temptf2 != True:
+                print('\nWhat team are you adding members to?')
+                teammemadd = input('(int.) ')
                 if isint(teammemadd):
                     temptf2 = True
             temptf2 = False
