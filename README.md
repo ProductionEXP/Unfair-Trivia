@@ -4,10 +4,13 @@
 ###### Idea by: [Gary K. Herberger Young Scholars Academy](https://herbergeracademy.asu.edu)
 
 In the game of unfair tivia you do not know how many points each question is worth, it could be a positve or negitive number. You also do not know what the criteria is to win,  it could be who ever has the lowest score.
+
+---
 ## Repository Info
 
 This repo IS maintaianed, please submit an issue if you have a request or a bug.
 
+---
 ## Rules
 
 - Each team can either chose to keep or give points to another team, this will only happen if they get the question correct
@@ -17,6 +20,7 @@ This repo IS maintaianed, please submit an issue if you have a request or a bug.
     - Ascending, Ex. 1 > 2 | Descending, Ex. 2 > 1
 - Once all questions are picked, you enter endgame, the game is over now time to determin a winner [Endgame](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#endgame)
 
+---
 ## Setup
 Either download the program from the green code button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your spescifided location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you are ready to start, double click the .py file (```main.py```), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#addingchanging-questions), the ```(int.) ``` before your cursor tells you what type of input is required.
 | Tag       | Expination                        | Example       |
@@ -31,11 +35,19 @@ Either download the program from the green code button, [here](https://github.co
 
 After every input you must press enter to continue. Before it askes you ```How many teams are playing?```, it will show you the current table and how many questions remain. After you enter the number of teams playing it will ask what team is starting, this number must be less than or equal to the number of teams. After that you chose the direction, once that is done setup is compleate.
 
+---
+###### Adding members
+
+---
+###### Adding team names
+
+---
 ## Running The Game
 Once setup is compleate the game will display available questions and what teams is up to pick a question. After the team picks a question, it will then display the team # and the question #, then ask if they are keeping or giving the points, if they are giving it will then ask the team that they are giving the points to. After that it will display What team is up, what question, if they are keeping or giving the points, and to who, then what the question is and it's answer, it will then ask you if they got the question correct. It is within your own judgement if the anwser is correct, the computer will only display one possible anwser. This prosses repeats until there is no more questions. 
 
 If at any point you want to see the scores of the teams, when it asks ```What question do they pick?``` just type ```score```, and it will display the scores.
 
+---
 ## Endgame
 Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```Data\scores.json``` in here you will find a data set that has the team number and score for that team. It will look somthing like this:
 ```
@@ -56,9 +68,11 @@ This is where the programs stops it's job and you have to do yours.
 
 Before the game started you should have picked some winnging critrea now is the time to figure out the winner, let's say that your criteria was, ```If the dice rolls 1 or 4 highest score wins, if the dice rolls 2 or 5 lowest score wins, and if it rolls 5 or 6 closest score to a prime number wins```. All you would have to do is roll a dice and look at the scores to determin a winner. Congrats you have just played the game of unfair trivia!
 
+---
 ## Playing the game 
 Instead of running the game you can play it, the prosess to do this is the same as if you where running the game, you will do setup the same, but instead of running ```main.py``` you need to run ```play.py```. after that everything is the same. Once you get to playing the game part instead of telling you the anwser it will ask you for the anwser, your anwser can be right but the anwser might not be in the data base, you can manually add points by typing ```madd``` when it asks you ```What question do you pick?``` it will then ask you for a team # and then how many points you want to add or remove, you can remove points by putting a negitve sign in front of the number you input.  
 
+---
 ## Adding/Changing Questions
 ###### Changing Questions
 By defualt the code comes with two questions:
@@ -258,7 +272,7 @@ In this update I added the ability to "play" the game, in the previous version y
 In this update I added a JSON system for scores vs individual .txt files for every team. This was added to  bot ```main.py``` and ```play.py```.
 
 ---
-### [V3 - ?](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V3)
+### [V3 - Names update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V3)
 ###### Release Date: ?
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
