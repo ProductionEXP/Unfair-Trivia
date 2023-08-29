@@ -87,4 +87,9 @@ def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, 
     with open(teamlist, 'w') as f:
         json.dump(data, f, indent=4)
 
-addmembers(numofteams, 1)
+with open(teamlist) as f:
+        data = json.load(f)
+with open(teamlist, 'w') as f:
+    json.dump(data, f, indent=4)
+
+#addmembers(numofteams, 1)

@@ -49,16 +49,18 @@ If at any point you want to see the scores of the teams, when it asks ```What qu
 
 ---
 ## Endgame
-Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```Data\scores.json``` in here you will find a data set that has the team number and score for that team. It will look somthing like this:
+Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```teams.json``` in here you will find a data set that has the team number and score for that team. It will look somthing like this:
 ```
 [
     {
         "team": "1",
-        "score": "0"
+        "score": "0",
+        "members": []
     },
     {
         "team": "2",
-        "score": "0"
+        "score": "0",
+        "members": []
     }
 ]
 ```

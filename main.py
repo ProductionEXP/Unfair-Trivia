@@ -213,7 +213,7 @@ while temptf != True:
             temptf2 = False
             cs()
             if teammemadd.lower() != 'exit':
-                #addnames(teammemadd)
+                addnames(teammemadd)
         temptf = True
         cs()
     elif temp == False:

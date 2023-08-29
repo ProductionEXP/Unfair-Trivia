@@ -1,0 +1,12 @@
+[
+    {
+        "team": "1",
+        "score": "0",
+        "members": ["billy", "bob"]
+    },
+    {
+        "team": "2",
+        "score": "0",
+        "members": []
+    }
+]
