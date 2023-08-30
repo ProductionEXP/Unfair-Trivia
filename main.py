@@ -1,4 +1,4 @@
-searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False
+searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False; teamnameadd = ''
 
 import os
 import json
@@ -93,7 +93,7 @@ def yesorno(yorn: str, y: str | None = 'y', n: str | None = 'n') -> bool:
         return True
     else:
         print(str(yorn) + ' Is not a accepted input, try again')
-    
+    4
 # Generates score file
 def genscoerfile(numofteams: int | None = numofteams, teamsdone: int | None = 0, teamlist: str | None = teamlist) -> None:
     with open(teamlist, 'w') as openfile:
@@ -353,7 +353,7 @@ while temptf != True:
                 break 
     else:
         temptf = True
-temptf2 = True
+temptf2 = False
 temptf = False
 
 # Addes Names to team (Team Names)
@@ -364,7 +364,7 @@ while temptf != True:
     if temp:
         while teamnameadd.lower() != 'exit':
             while temptf2 != True:
-                print('\nWhat team are you adding members to?')
+                print('\nWhat team are you adding a team name to?')
                 teamnameadd = input('(int.) ')
                 if teamnameadd.lower() == 'exit':
                     break 
@@ -519,6 +519,7 @@ with open(question, 'r') as openfile:
                 currentteam = int(numofteams)
 
 # Display fianl scores
+newtable(gridfile, columns, rows, pickednums)
 cs()
 print('Endgame!\nCurrent scores are:')
 printteams(numofteams)
