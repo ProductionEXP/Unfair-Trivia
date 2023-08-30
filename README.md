@@ -56,6 +56,7 @@ Upon entering engame the code will display the scores and then exit, if the term
 [
     {
         "team": "1",
+        "teamname": "The Dogs",
         "score": "21",
         "members": [
             "bob",
@@ -64,6 +65,7 @@ Upon entering engame the code will display the scores and then exit, if the term
     },
     {
         "team": "2",
+        "teamname": "The Cats",
         "score": "-5",
         "members": [
             "Ryan"
@@ -71,7 +73,7 @@ Upon entering engame the code will display the scores and then exit, if the term
     }
 ]
 ```
-The team and score for every team is dispalyed.
+The team and score for every team is dispalyed. Along with the team name and members if applicable. 
 
 This is where the programs stops it's job and you have to do yours.
 
