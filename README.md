@@ -22,7 +22,7 @@ This repo IS maintaianed, please submit an issue if you have a request or a bug.
 
 ---
 ## Setup
-Either download the program from the green code button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your spescifided location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you are ready to start, double click the .py file (```main.py```), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#addingchanging-questions), the ```(int.) ``` before your cursor tells you what type of input is required.
+Either download the program from the green ```<>code``` button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your spescifided location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you are ready to start, double click the .py file (```main.py```), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#addingchanging-questions), the ```(int.) ``` before your cursor tells you what type of input is required.
 | Tag       | Expination                        | Example       |
 | --------- | --------------------------------- | ------------- |
 | (int.)    | Integer                           | 1             |
@@ -38,6 +38,8 @@ After every input you must press enter to continue. Before it askes you ```How m
 ---
 ###### Adding members
 
+If you want to add members to a team or all teams 
+
 ---
 ###### Adding team names
 
@@ -49,18 +51,23 @@ If at any point you want to see the scores of the teams, when it asks ```What qu
 
 ---
 ## Endgame
-Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```teams.json``` in here you will find a data set that has the team number and score for that team. It will look somthing like this:
+Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```teams.json``` in here you will find a data set that has the team number and score for that team. It could look somthing like this:
 ```
 [
     {
         "team": "1",
-        "score": "0",
-        "members": []
+        "score": "21",
+        "members": [
+            "bob",
+            "joE"
+        ]
     },
     {
         "team": "2",
-        "score": "0",
-        "members": []
+        "score": "-5",
+        "members": [
+            "Ryan"
+        ]
     }
 ]
 ```
@@ -73,6 +80,8 @@ Before the game started you should have picked some winnging critrea now is the 
 ---
 ## Playing the game 
 Instead of running the game you can play it, the prosess to do this is the same as if you where running the game, you will do setup the same, but instead of running ```main.py``` you need to run ```play.py```. after that everything is the same. Once you get to playing the game part instead of telling you the anwser it will ask you for the anwser, your anwser can be right but the anwser might not be in the data base, you can manually add points by typing ```madd``` when it asks you ```What question do you pick?``` it will then ask you for a team # and then how many points you want to add or remove, you can remove points by putting a negitve sign in front of the number you input.  
+
+### ```play.py``` IS TIPICALY AN OLDER VERSION OF ```main.py```
 
 ---
 ## Adding/Changing Questions
@@ -274,7 +283,36 @@ In this update I added the ability to "play" the game, in the previous version y
 In this update I added a JSON system for scores vs individual .txt files for every team. This was added to  bot ```main.py``` and ```play.py```.
 
 ---
-### [V3 - Names update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V3)
+### [V3 - The Names Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V3)
 ###### Release Date: ?
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
+
+Multiple things where added in this update. Here is a short changelog:
+
+- General updates
+    - Added Members
+    - Added Team Names
+    - Updates to how teams.json (renamed from scores.json) is writen 
+    
+- Technical Updates
+    - Added ```yesorno()```
+    - Added ```test.py```
+
+###### Members
+Added the ability to add name (members) to teams, this is not required.
+
+You can add members after you have entered how many teams are playing, you can add members in any order to any number of teams. To exit adding team names and continue with the program, when it asks you ```Would you like to add members to teams?``` enter ```exit```. For more information look [here](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#adding-members).
+
+###### Team Names
+Added the ability to add team names to every team, this is not required.
+
+You can add team names after you have either added or skiped adding members, you can add team names in any order to any number of teams. To exit adding team names and continue with the program, when it asks you ```Would you like to add team names to teams?``` enter ```exit```. For more information look [here](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#adding-team-names).
+
+###### Scoring
+Renamed ```scores.json``` to ```teams.json```. And added ```members``` and ```teamname```. For furthur information on how this file is formated, look [here](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Endgame)
+
+###### Technical Changes
+Added a function to see if a user input is either a or b (See [setup](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#setup) for full list of two character inputs). Function name ```yesorno()```.
+
+Added ```test.py``` for development of new features before they are added to either ```main.py``` or ```play.py```, then bugfixed. This is an internal development file, serves no outside purpose.   
