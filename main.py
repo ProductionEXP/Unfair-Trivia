@@ -238,6 +238,7 @@ def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0,
     with open(teamlist) as f:
         data = json.load(f)
     with open(teamlist, 'w') as f:
+        json.dump(data, f, indent=4)
 
 # Figures out how many questions there are
 with open(question, 'r') as openfile:
