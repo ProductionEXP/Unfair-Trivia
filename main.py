@@ -134,7 +134,7 @@ def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, 
         openfile.write('[\n')
         while int((teamsdone+1)) < int(numofteams):
             if teamsdone+1 != targetteam:
-                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
+                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
                 jsondata = json.loads(scoreset)
                 openfile.write(json.dumps(jsondata, indent=4))
                 openfile.write(',\n')
@@ -153,13 +153,13 @@ def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, 
                         cs()
                     else: continue
                 temptf = False
-                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
+                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
                 jsondata = json.loads(scoreset)
                 openfile.write(json.dumps(jsondata, indent=4))
                 openfile.write(',\n')
                 teamsdone = teamsdone+1
         if int((teamsdone+1)) == int(numofteams) and teamsdone+1 != targetteam:
-            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members']).replace("'", '"')) + '}'
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members']).replace("'", '"')) + '}'
             jsondata = json.loads(scoreset)
             openfile.write(json.dumps(jsondata, indent=4))
             openfile.write('\n]')
@@ -177,7 +177,7 @@ def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, 
                     cs()
                 else: continue
             temptf = False
-            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
             jsondata = json.loads(scoreset)
             openfile.write(json.dumps(jsondata, indent=4))
             openfile.write('\n]')    
@@ -222,7 +222,7 @@ def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0,
             openfile.write('\n]')
         if teamsdone+1 == targetteam and int((teamsdone+1)) == int(numofteams):
             while temptf != True:
-                print('Who are the new members you want to add?')
+                print('What is the new team name?')
                 teamname = input('(str.) ')
                 print('\n' + str(teamname) + ' - Please confim that this is the new name of the team')
                 conf = input('(y/n) ')
@@ -523,4 +523,4 @@ newtable(gridfile, columns, rows, pickednums)
 cs()
 print('Endgame!\nCurrent scores are:')
 printteams(numofteams)
-input('Press endter to exit')
+input('Press enter to exit')

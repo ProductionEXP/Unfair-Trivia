@@ -38,10 +38,16 @@ After every input you must press enter to continue. Before it askes you ```How m
 ---
 ###### Adding members
 
-If you want to add members to a team or all teams 
+If you want to add members to a team or all teams, after entering how many teams are playing the game will ask you, ```Would you like to add members to teams?```, after this all that has to be done is follow the instructions givin by the game. When you add members to a team it will remove all previous members, so remember to add all member vs just the new ones.
+
+Once you are done adding team members, when the game asks you, ```What team are you adding members to?```, enter ```exit``` and you will be onto the next step.
 
 ---
 ###### Adding team names
+
+After you either add team members or you chose to skip that step you are asked, ```Would you like to add team names to teams?```, if you want to add team names to any of the teams you can. When you add a team name it will remove the previous name and replace it with the new name.
+
+Once you are done adding team names, when the game asks you, ```What team are you adding a team name to?```, enter ```exit``` and you will be onto the next step.
 
 ---
 ## Running The Game
@@ -286,7 +292,7 @@ In this update I added a JSON system for scores vs individual .txt files for eve
 
 ---
 ### [V3 - The Names Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V3)
-###### Release Date: ?
+###### Release Date: 8/30/2023
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
 
@@ -296,7 +302,8 @@ Multiple things where added in this update. Here is a short changelog:
     - Added Members
     - Added Team Names
     - Updates to how teams.json (renamed from scores.json) is writen 
-    
+    - Intigrated all previous updates to ```play.py```
+
 - Technical Updates
     - Added ```yesorno()```
     - Added ```test.py```
@@ -314,7 +321,27 @@ You can add team names after you have either added or skiped adding members, you
 ###### Scoring
 Renamed ```scores.json``` to ```teams.json```. And added ```members``` and ```teamname```. For furthur information on how this file is formated, look [here](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Endgame)
 
+###### Updated ```play.py```
+Updated play.py with every new fetures, full list:
+
+- Updated from ```scores.json``` to ```teams.json```
+    - Added ```teamname```
+    - Added ```members```
+    - Changed formating
+- Added ```printmembers```, ```yesorno```, ```addmembers```, ```addteamname```
+- Updated ```printteams```, ```genscorefile```, ```addscorejson```
+- Updated all code for ```teams.json```
+- Added the ability to add team names and members
+
 ###### Technical Changes
 Added a function to see if a user input is either a or b (See [setup](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#setup) for full list of two character inputs). Function name ```yesorno()```.
 
 Added ```test.py``` for development of new features before they are added to either ```main.py``` or ```play.py```, then bugfixed. This is an internal development file, serves no outside purpose.   
+
+---
+### [V4 - The UI Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4)
+###### Release Date: ?
+###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
+##
+
+This will be pain.
