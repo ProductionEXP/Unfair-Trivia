@@ -87,13 +87,13 @@ def isint(number: any) -> bool:
     
 # Checks if an input is y or n
 def yesorno(yorn: str, y: str | None = 'y', n: str | None = 'n') -> bool:
-    if yorn.lower() == n:
+    if yorn.lower == n:
         return False
-    elif yorn.lower() == y:
+    elif yorn.lower == y:
         return True
     else:
         print(str(yorn) + ' Is not a accepted input, try again')
-    4
+
 # Generates score file
 def genscoerfile(numofteams: int | None = numofteams, teamsdone: int | None = 0, teamlist: str | None = teamlist) -> None:
     with open(teamlist, 'w') as openfile:
@@ -238,7 +238,6 @@ def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0,
     with open(teamlist) as f:
         data = json.load(f)
     with open(teamlist, 'w') as f:
-        json.dump(data, f, indent=4)
 
 # Figures out how many questions there are
 with open(question, 'r') as openfile:
