@@ -1,4 +1,4 @@
-searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False
+searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False; teamnameadd = ''
 
 import os
 import json
@@ -45,13 +45,31 @@ def printtable(gridfile: str) -> None:
         openfile.seek(0)
         print(openfile.read())
 
+# Prints current list of members for a single team 
+def printmembers(targetteam: int, teamlist: str | None = teamlist) -> None:
+    with open(teamlist) as openfile:
+        scoresnteams = json.load(openfile)
+        print('Members:')
+        while int(len(scoresnteams[int(targetteam)]['members'])) > 0:
+            memberslist = scoresnteams[int(targetteam)]['members']
+            print(memberslist.pop())
+        print()
+
 # Prints current lits of teams and scores
 def printteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None = teamlist) -> None:
     with open(teamlist) as openfile:
         scoresnteams = json.load(openfile)
         while int(doneteams) <= int(numofteams):
-            print('Team ' + scoresnteams[doneteams-1]['team'] + ': ' + scoresnteams[doneteams-1]['score'])
-            doneteams = doneteams + 1
+            if str(scoresnteams[doneteams-1]['teamname']) == '':
+                print('Team ' + scoresnteams[doneteams-1]['team'] + ': ' + scoresnteams[doneteams-1]['score'])
+                if scoresnteams[doneteams-1]['members'] != []:
+                    printmembers(doneteams-1)
+                doneteams = doneteams + 1
+            elif str(scoresnteams[doneteams-1]['teamname']) != '':
+                print(scoresnteams[doneteams-1]['teamname'] + ': ' + scoresnteams[doneteams-1]['score'])
+                if scoresnteams[doneteams-1]['members'] != []:
+                    printmembers(doneteams-1)
+                doneteams = doneteams + 1     
 
 # Checks if a number is and integer
 def isint(number: any) -> bool:
@@ -75,19 +93,19 @@ def yesorno(yorn: str, y: str | None = 'y', n: str | None = 'n') -> bool:
         return True
     else:
         print(str(yorn) + ' Is not a accepted input, try again')
-    
+
 # Generates score file
 def genscoerfile(numofteams: int | None = numofteams, teamsdone: int | None = 0, teamlist: str | None = teamlist) -> None:
     with open(teamlist, 'w') as openfile:
         openfile.write('[\n')
         while int((teamsdone+1)) < int(numofteams):
-            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "0","members": []}'
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "0","members": []}'
             jsondata = json.loads(scoreset)
             openfile.write(json.dumps(jsondata, indent=4))
             openfile.write(',\n')
             teamsdone = teamsdone+1
         if int((teamsdone+1)) == int(numofteams):
-            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","score": "0","members": []}'
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "0","members": []}'
             jsondata = json.loads(scoreset)
             openfile.write(json.dumps(jsondata, indent=4))
         openfile.write('\n]')
@@ -108,6 +126,119 @@ def addscorejson(team: int, teamnumpicked: int, teamlist: str | None = teamlist,
     with open(teamlist, 'w') as f:
         json.dump(data, f, indent=4)
 
+# Adds members to a team
+def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, teamsdone: int | None = 0, teamlist: str | None = teamlist, temptf: bool | None = False) -> None:
+    with open(teamlist) as f:
+        prevdata = json.load(f)
+    with open(teamlist, 'w') as openfile:
+        openfile.write('[\n')
+        while int((teamsdone+1)) < int(numofteams):
+            if teamsdone+1 != targetteam:
+                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
+                jsondata = json.loads(scoreset)
+                openfile.write(json.dumps(jsondata, indent=4))
+                openfile.write(',\n')
+                teamsdone = teamsdone+1
+            if teamsdone+1 == targetteam and int((teamsdone+1)) < int(numofteams):
+                while temptf != True:
+                    print('Who are the new members you want to add?')
+                    print('If multiple seperate names with a space')
+                    nmembers = input('(str.) ')
+                    nmembers = nmembers.replace(' ', '", "')
+                    nmembers = '["' + nmembers + '"]'
+                    print('\n' + str(nmembers) + ' Please confim that these are the names you want to add')
+                    conf = input('(y/n) ')
+                    if yesorno(conf):
+                        temptf = True
+                        cs()
+                    else: continue
+                temptf = False
+                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
+                jsondata = json.loads(scoreset)
+                openfile.write(json.dumps(jsondata, indent=4))
+                openfile.write(',\n')
+                teamsdone = teamsdone+1
+        if int((teamsdone+1)) == int(numofteams) and teamsdone+1 != targetteam:
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members']).replace("'", '"')) + '}'
+            jsondata = json.loads(scoreset)
+            openfile.write(json.dumps(jsondata, indent=4))
+            openfile.write('\n]')
+        if teamsdone+1 == targetteam and int((teamsdone+1)) == int(numofteams):
+            while temptf != True:
+                print('Who are the new members you want to add?')
+                print('If multiple seperate names with a space')
+                nmembers = input('(str.) ')
+                nmembers = nmembers.replace(' ', '", "')
+                nmembers = '["' + nmembers + '"]'
+                print('\n' + str(nmembers) + ' Please confim that these are the names you want to add')
+                conf = input('(y/n) ')
+                if yesorno(conf):
+                    temptf = True
+                    cs()
+                else: continue
+            temptf = False
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
+            jsondata = json.loads(scoreset)
+            openfile.write(json.dumps(jsondata, indent=4))
+            openfile.write('\n]')    
+    with open(teamlist) as f:
+        data = json.load(f)
+    with open(teamlist, 'w') as f:
+        json.dump(data, f, indent=4)
+
+# Adds team name to a team
+def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0, teamsdone: int | None = 0, teamlist: str | None = teamlist, temptf: bool | None = False) -> None:
+    with open(teamlist) as f:
+        prevdata = json.load(f)
+    with open(teamlist, 'w') as openfile:
+        openfile.write('[\n')
+        while int((teamsdone+1)) < int(numofteams):
+            if teamsdone+1 != targetteam:
+                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "' + str(prevdata[teamsdone]['teamname']) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
+                jsondata = json.loads(scoreset)
+                openfile.write(json.dumps(jsondata, indent=4))
+                openfile.write(',\n')
+                teamsdone = teamsdone+1
+            if teamsdone+1 == targetteam and int((teamsdone+1)) < int(numofteams):
+                while temptf != True:
+                    print('What is the new team name?')
+                    teamname = input('(str.) ')
+                    print('\n' + str(teamname) + ' - Please confim that this is the new name of the team')
+                    conf = input('(y/n) ')
+                    if yesorno(conf):
+                        temptf = True
+                        cs()
+                    else: continue
+                temptf = False
+                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "' + str(teamname) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
+                jsondata = json.loads(scoreset)
+                openfile.write(json.dumps(jsondata, indent=4))
+                openfile.write(',\n')
+                teamsdone = teamsdone+1
+        if int((teamsdone+1)) == int(numofteams) and teamsdone+1 != targetteam:
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "' + str(prevdata[teamsdone]['teamname']) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members']).replace("'", '"')) + '}'
+            jsondata = json.loads(scoreset)
+            openfile.write(json.dumps(jsondata, indent=4))
+            openfile.write('\n]')
+        if teamsdone+1 == targetteam and int((teamsdone+1)) == int(numofteams):
+            while temptf != True:
+                print('What is the new team name?')
+                teamname = input('(str.) ')
+                print('\n' + str(teamname) + ' - Please confim that this is the new name of the team')
+                conf = input('(y/n) ')
+                if yesorno(conf):
+                    temptf = True
+                    cs()
+                else: continue
+            temptf = False
+            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "' + str(teamname) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
+            jsondata = json.loads(scoreset)
+            openfile.write(json.dumps(jsondata, indent=4))
+            openfile.write('\n]')    
+    with open(teamlist) as f:
+        data = json.load(f)
+    with open(teamlist, 'w') as f:
+
 # Figures out how many questions there are
 with open(question, 'r') as openfile:
     sol = json.load(openfile)
@@ -122,6 +253,7 @@ print('Number of questions: ' + str(numofquestions))
 
 # Has the user make a grid
 while grid != True:
+    temptf = False 
     while grid1 != True:
         print('How many rows do you want?')
         row = input('(int.) ')
@@ -153,15 +285,22 @@ while grid != True:
         continue
 
     # Has user confirm grid
-    print('Grid is: ' + str(columns) + 'x' + str(rows))
-    print('Please confirm\nenter "y" for yes\nenter "n" to enter new values')
-    yorn = input('(y/n) ')
-    if yesorno(yorn):
-        grid = True
-    else:
-        grid1 = False
-        grid2 = False 
-        continue
+    while temptf != True:
+        print('Grid is: ' + str(columns) + 'x' + str(rows))
+        print('Please confirm\nenter "y" for yes\nenter "n" to enter new values')
+        yorn = input('(y/n) ')
+        yorntf = yesorno(yorn)
+        if yorntf:
+            grid = True
+            temptf = True
+        elif yorntf == False:
+            grid1 = False
+            grid2 = False
+            temptf = True
+            continue
+        else:
+            temptf = False 
+    temptf = False 
 
 cs()
 
@@ -184,6 +323,68 @@ temptf = False
 
 # Generate a score file for each team
 genscoerfile(numofteams)
+
+# Adds members to teams
+while temptf != True:
+    print('\nWould you like to add members to teams?')
+    addmem = input('(y/n) ')
+    temp = yesorno(addmem)
+    if temp:
+        while teammemadd.lower() != 'exit':
+            while temptf2 != True:
+                print('\nWhat team are you adding members to?')
+                teammemadd = input('(int.) ')
+                if teammemadd.lower() == 'exit':
+                    break 
+                if isint(teammemadd):
+                    if teammemadd <= numofteams:
+                        temptf2 = True
+                    else:
+                        print('Value is to large, try again')
+                        temptf2 = False   
+            temptf2 = False
+            cs()
+            if teammemadd.lower() != 'exit':
+                addmembers(numofteams, int(teammemadd))
+            if teammemadd.lower() == 'exit':
+                temptf2 = True
+                temptf = True
+                break 
+    else:
+        temptf = True
+temptf2 = False
+temptf = False
+
+# Addes Names to team (Team Names)
+while temptf != True:
+    print('\nWould you like to add team names to teams?')
+    addname = input('(y/n) ')
+    temp = yesorno(addname)
+    if temp:
+        while teamnameadd.lower() != 'exit':
+            while temptf2 != True:
+                print('\nWhat team are you adding a team name to?')
+                teamnameadd = input('(int.) ')
+                if teamnameadd.lower() == 'exit':
+                    break 
+                if isint(teamnameadd):
+                    if teamnameadd <= numofteams:
+                        temptf2 = True
+                    else:
+                        print('Value is to large, try again')
+                        temptf2 = False   
+            temptf2 = False
+            cs()
+            if teamnameadd.lower() != 'exit':
+                addteamname(numofteams, int(teamnameadd))
+            if teamnameadd.lower() == 'exit':
+                temptf2 = True
+                temptf = True
+                break 
+    else:
+        temptf = True
+temptf2 = True
+temptf = False
 
 # Figure out the starting team
 while temptf != True:
@@ -317,7 +518,8 @@ with open(question, 'r') as openfile:
                 currentteam = int(numofteams)
 
 # Display fianl scores
+newtable(gridfile, columns, rows, pickednums)
 cs()
 print('Endgame!\nCurrent scores are:')
 printteams(numofteams)
-input('Press endter to exit')
+input('Press enter to exit')
