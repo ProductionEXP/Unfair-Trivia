@@ -71,7 +71,7 @@ def printteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None 
                     printmembers(doneteams-1)
                 doneteams = doneteams + 1     
 
-# Checks if a number is and integer
+# Checks if a number is an integer
 def isint(number: any) -> bool:
     flag = True
     try:
