@@ -71,7 +71,7 @@ def printteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None 
                     printmembers(doneteams-1)
                 doneteams = doneteams + 1     
 
-# Checks if a number is and integer
+# Checks if a number is an integer
 def isint(number: any) -> bool:
     flag = True
     try:
@@ -238,6 +238,7 @@ def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0,
     with open(teamlist) as f:
         data = json.load(f)
     with open(teamlist, 'w') as f:
+        json.dump(data, f, indent=4)
 
 # Figures out how many questions there are
 with open(question, 'r') as openfile:
