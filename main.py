@@ -1,7 +1,10 @@
-searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False; teamnameadd = ''
+searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False; teamnameadd = ''; gridd = False
 
 import os
 import json
+import PySimpleGUI as sg
+
+sg.theme('DarkBlack')
 
 # Files for the program
 if os.name == 'nt':
@@ -72,7 +75,7 @@ def printteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None 
                 doneteams = doneteams + 1     
 
 # Checks if a number is an integer
-def isint(number: any) -> bool:
+def isint(number: any, printi: bool | None = True) -> bool:
     flag = True
     try:
         int(number)
@@ -82,7 +85,8 @@ def isint(number: any) -> bool:
     if flag:
         return True
     else:
-        print('That is not a integer, try again')
+        if printi == True:
+            print('That is not a integer, try again')
         return False
     
 # Checks if an input is y or n
@@ -253,60 +257,82 @@ cs()
 print('Number of questions: ' + str(numofquestions))
 
 # Has the user make a grid
-while grid != True:
-    temptf = False 
-    while grid1 != True:
-        print('How many rows do you want?')
-        row = input('(int.) ')
-        if isint(row):
-            rows = row
-            grid1 = True
+while gridd == False:
+    griduilayout =  [[sg.Text('Welcome to Unfair Trvia!')],
+                     [sg.Text('To Start fill out the feilds below: \n')],
+                     [sg.Text('How many rows do you want?')],
+                     [sg.Input('', enable_events=True,  key='rows', )],
+                     [sg.Text('Input can not be blank\n', key='rowsfail',  text_color='red')],
+                     [sg.Text('How many columns do you want?')],
+                     [sg.Input('', enable_events=True,  key='columns', )],
+                     [sg.Text('Input can not be blank\n', key='columnsfail', text_color='red')],
+                     [sg.Text(key='fail', text_color='red')],
+                     [sg.Button('Submit', visible=True, bind_return_key=True)]
+                    ]
+    griduiwindow = sg.Window('Unfair Trivia - Grid Setup', griduilayout)
+
+    while True:
+        event, values = griduiwindow.read()
+        if event in (None, 'Exit'):
+            break
+        if event == sg.WINDOW_CLOSED or event == 'Quit':
+            break
+        if len(values['rows']) and values['rows'][-1] not in ('0123456789'):
+            griduiwindow['rows'].update(values['rows'][:-1])
+        if len(values['columns']) and values['columns'][-1] not in ('0123456789'):
+            griduiwindow['columns'].update(values['columns'][:-1])
+        if values['rows'] == '' or isint(values['rows'], False) == False:
+            griduiwindow['rowsfail'].update('Input can not be blank\n')
+        elif values['rows'] != '':
+            griduiwindow['rowsfail'].update('')
+        if values['columns'] == '' or isint(values['columns'], False) == False:
+            griduiwindow['columnsfail'].update('Input can not be blank\n')   
+        elif values['columns'] != '':
+            griduiwindow['columnsfail'].update('')         
+        if isint(values['rows'], False) and isint(values['columns'], False) and int(values['rows'])*int(values['columns']) != int(numofquestions):
+            if int(values['rows'])*int(values['columns']) > int(numofquestions):
+                griduiwindow['fail'].update('Grid too large, try again')
+            elif int(values['rows'])*int(values['columns']) < int(numofquestions):
+                griduiwindow['fail'].update('Grid too small, try again')
         else:
-            continue
+            griduiwindow['fail'].update('')
+        if isint(values['rows'], False) and isint(values['columns'], False): 
+            if event == 'Submit' and int(values['rows'])*int(values['columns']) == int(numofquestions):
+                griduiwindow['fail'].update('')
+                print('You have submited a grid of ' + str((int(values['rows'])*int(values['columns']))) + ' questions.\nIn a grid of ' + values['rows'] + 'x' + values['columns'])
+                columns = values['columns']
+                rows = values['rows']
+                break
+    griduiwindow.close()
 
-    while grid2 != True:
-        print('How many columns do you want?')
-        column = input('(int.) ')
-        if isint(column):
-            columns = column
-            grid2 = True
-        else:
-            continue
+    newtable(gridfile, columns, rows, pickednums)
+    with open(gridfile, 'r') as openfile:
+        grid = openfile.read()
+        openfile.close()
 
-    if int(columns)*int(rows) > numofquestions:
-        print('Grid is to large, try again')
-        grid1 = False
-        grid2 = False 
-        continue
+    gridcheckuilayout = [[sg.Text(grid)],
+                         [sg.Text('\nYou entered a grid of ' + str(rows) + 'x' + str(columns))],
+                         [sg.Text('Please confrim that this grid is correct')],
+                         [sg.Button('Yes', visible=True), sg.Button('No', visible=True)]
+                        ]
 
-    elif int(columns)*int(rows) < numofquestions:
-        print('Grid is to small, try again')
-        grid1 = False
-        grid2 = False 
-        continue
+    gridcheckuiwindow = sg.Window('Unfair Trivia - Grid Confirmation', gridcheckuilayout)
 
-    # Has user confirm grid
-    while temptf != True:
-        print('Grid is: ' + str(columns) + 'x' + str(rows))
-        print('Please confirm\nenter "y" for yes\nenter "n" to enter new values')
-        yorn = input('(y/n) ')
-        yorntf = yesorno(yorn)
-        if yorntf:
-            grid = True
-            temptf = True
-        elif yorntf == False:
-            grid1 = False
-            grid2 = False
-            temptf = True
-            continue
-        else:
-            temptf = False 
-    temptf = False 
+    while True:
+        event, values = gridcheckuiwindow.read()
+        if event in (None, 'Exit'):
+            break
+        if event == sg.WINDOW_CLOSED or event == 'Quit':
+            break
+        if event == 'Yes':
+            gridd = True
+            gridcheckuiwindow.close()
+            break
+        elif event == 'No':
+            gridd = False
+            gridcheckuiwindow.close()
+            break
 
-cs()
-
-# Generates first table
-newtable(gridfile, columns, rows, pickednums)
 
 # Prints first table
 printtable(gridfile)
