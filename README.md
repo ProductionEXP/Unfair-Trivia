@@ -9,11 +9,6 @@ In the game of unfair tivia you do not know how many points each question is wor
 This repo IS maintaianed, please submit an issue if you have a request or a bug.
 
 ---
-## Repository Info
-
-This repo IS maintaianed, please submit an issue if you have a request or a bug.
-
----
 ## Rules
 
 - Each team can either chose to keep or give points to another team, this will only happen if they get the question correct

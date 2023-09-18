@@ -1,4 +1,4 @@
-searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False; teamnameadd = ''; gridd = False
+searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = ''; temptf2 = False; teamnameadd = ''; gridd = False; teamnum = False; members = False; names = False
 
 import os
 import json
@@ -43,10 +43,13 @@ def newtable(gridfile: str, columns: int, rows: int, pickednums: list | None = [
         openfile.close
 
 # Prints current table
-def printtable(gridfile: str) -> None:
+def printtable(gridfile: str | None = gridfile, p: bool | None = True) -> str:
     with open(gridfile, 'r') as openfile:
         openfile.seek(0)
-        print(openfile.read())
+        if p:
+            print(openfile.read())
+        else:
+            return str(openfile.read())
 
 # Prints current list of members for a single team 
 def printmembers(targetteam: int, teamlist: str | None = teamlist) -> None:
@@ -74,7 +77,7 @@ def printteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None 
                     printmembers(doneteams-1)
                 doneteams = doneteams + 1     
 
-# Checks if a number is an integer
+# Check if a string (any) is an integer
 def isint(number: any, printi: bool | None = True) -> bool:
     flag = True
     try:
@@ -259,6 +262,7 @@ print('Number of questions: ' + str(numofquestions))
 # Has the user make a grid
 while gridd == False:
     griduilayout =  [[sg.Text('Welcome to Unfair Trvia!')],
+                     [sg.Text(str('Number of questions: ' + str(numofquestions)))],
                      [sg.Text('To Start fill out the feilds below: \n')],
                      [sg.Text('How many rows do you want?')],
                      [sg.Input('', enable_events=True,  key='rows', )],
@@ -273,22 +277,23 @@ while gridd == False:
 
     while True:
         event, values = griduiwindow.read()
-        if event in (None, 'Exit'):
-            break
-        if event == sg.WINDOW_CLOSED or event == 'Quit':
-            break
+        if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
         if len(values['rows']) and values['rows'][-1] not in ('0123456789'):
             griduiwindow['rows'].update(values['rows'][:-1])
         if len(values['columns']) and values['columns'][-1] not in ('0123456789'):
             griduiwindow['columns'].update(values['columns'][:-1])
         if values['rows'] == '' or isint(values['rows'], False) == False:
             griduiwindow['rowsfail'].update('Input can not be blank\n')
-        elif values['rows'] != '':
+        if values['rows'] == '0':
+            griduiwindow['rowsfail'].update('Input can not be 0\n')   
+        elif values['rows'] != '0' and values['rows'] != '':
             griduiwindow['rowsfail'].update('')
         if values['columns'] == '' or isint(values['columns'], False) == False:
             griduiwindow['columnsfail'].update('Input can not be blank\n')   
-        elif values['columns'] != '':
-            griduiwindow['columnsfail'].update('')         
+        if values['columns'] == '0':
+            griduiwindow['columnsfail'].update('Input can not be 0\n')   
+        elif values['columns'] != '0' and values['columns'] != '':
+            griduiwindow['columnsfail'].update('')       
         if isint(values['rows'], False) and isint(values['columns'], False) and int(values['rows'])*int(values['columns']) != int(numofquestions):
             if int(values['rows'])*int(values['columns']) > int(numofquestions):
                 griduiwindow['fail'].update('Grid too large, try again')
@@ -313,17 +318,14 @@ while gridd == False:
     gridcheckuilayout = [[sg.Text(grid)],
                          [sg.Text('\nYou entered a grid of ' + str(rows) + 'x' + str(columns))],
                          [sg.Text('Please confrim that this grid is correct')],
-                         [sg.Button('Yes', visible=True), sg.Button('No', visible=True)]
+                         [sg.Button('Yes', visible=True, bind_return_key=True), sg.Button('No', visible=True)]
                         ]
 
     gridcheckuiwindow = sg.Window('Unfair Trivia - Grid Confirmation', gridcheckuilayout)
 
     while True:
         event, values = gridcheckuiwindow.read()
-        if event in (None, 'Exit'):
-            break
-        if event == sg.WINDOW_CLOSED or event == 'Quit':
-            break
+        if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
         if event == 'Yes':
             gridd = True
             gridcheckuiwindow.close()
@@ -335,24 +337,89 @@ while gridd == False:
 
 
 # Prints first table
-printtable(gridfile)
+printtable()
 
 # Prints how many questions remain
 print(str(numofquestions - len(pickednums)) + ' Questions Remain')
 
 # Figure out how many teams are playing
-while temptf != True:
-    print('\nHow many teams are playing?')
-    numofteams = input('(int.) ')
-    if isint(numofteams):
-        temptf = True
-temptf = False
+while teamnum == False:
+    numberofteamslayout =   [[sg.Text('How many teams are playing?')],
+                             [sg.Input('', enable_events=True,  key='numoteam', )],
+                             [sg.Text('Input can not be blank\n', key='teamnumfail',  text_color='red')],
+                             [sg.Button('Submit', visible=True, bind_return_key=True)]
+                            ]
+    numberofteamswindow = sg.Window('Unfair Trivia - Number Of Teams', numberofteamslayout)
+
+    while True:
+        event, values = numberofteamswindow.read()
+        if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+        if len(values['numoteam']) and values['numoteam'][-1] not in ('0123456789'):
+            numberofteamswindow['numoteam'].update(values['numoteam'][:-1])
+        if values['numoteam'] == '' or isint(values['numoteam'], False) == False:
+            numberofteamswindow['teamnumfail'].update('Input can not be blank\n')   
+        if values['numoteam'] == '0':
+            numberofteamswindow['teamnumfail'].update('Input can not be 0\n')   
+        elif values['numoteam'] != '0' and values['numoteam'] != '':
+            numberofteamswindow['teamnumfail'].update('')
+        if event == 'Submit' and values['numoteam'] != '' and values['numoteam'] != '0':
+            numofteams = int(values['numoteam'])
+            break
+    numberofteamswindow.close()    
+    teamnum = True
 
 # Generate a score file for each team
 genscoerfile(numofteams)
 
+if float(numofteams/2) != int(numofteams/2): [numofteamsinds1, numofteamsinds2] = [int((numofteams/2)+0.5), int((numofteams/2)-0.5)]
+else: [numofteamsinds1, numofteamsinds2] = [int(numofteams/2), int(numofteams/2)]
+
 # Adds members to teams
-while temptf != True:
+while members == False and names == False:
+    #displays1 (display section 1)
+    displays1 = []; teamsdone = 0; teamup = 1; leftcolumnteams = []
+    while teamsdone < numofteamsinds1:
+        [templist1, templist2] = [[], []]
+        templist1.append(sg.Text(str('\nTeam ' + str(teamup) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
+        templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
+        templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(teamup))), tooltip = str('Add a Team name to team ' + str(teamup))))
+        templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(teamup))), tooltip = str('Add a Team members to team ' + str(teamup))))
+        displays1.append(templist1)
+        displays1.append(templist2)
+        leftcolumnteams.append(teamup)
+        teamup = teamup + 2
+        teamsdone = teamsdone + 1
+
+    #displays2 (display section 2)
+    displays2 = []; teamsdone = 0; teamup = 2; rightcolumnteams = []
+    while teamsdone < numofteamsinds2:
+        [templist1, templist2] = [[], []]
+        templist1.append(sg.Text(str('\nTeam ' + str(teamup) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
+        templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
+        templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(teamup))), tooltip = str('Add a Team name to team ' + str(teamup))))
+        templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(teamup))), tooltip = str('Add a Team members to team ' + str(teamup))))
+        displays2.append(templist1)
+        displays2.append(templist2)
+        rightcolumnteams.append(teamup)
+        teamup = teamup + 2
+        teamsdone = teamsdone + 1
+
+    teamnamememberslayout = [[sg.Text('Unfair Trivia - Adding Team Names and Members'), sg.Button('Skip', tooltip = 'Skip this section')],
+                             [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+                             [sg.Column(displays1, scrollable = True, vertical_scroll_only = True, size_subsample_height = 1.25, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True), 
+                              sg.Column(displays2, scrollable = True, vertical_scroll_only = True, size_subsample_height = 1.25, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True)
+                             ]
+                            ]
+
+    [templist1, templist2, displays1, displays2s] = [[], [], [], []]
+    
+    teamnamememberswindow = sg.Window('Unfair Trivia - Team Names and Members', teamnamememberslayout, resizable = True)
+
+    while True:
+        event, values = teamnamememberswindow.read()
+        if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+        if event == 'Skip': teamnamememberswindow.close(); break
+
     print('\nWould you like to add members to teams?')
     addmem = input('(y/n) ')
     temp = yesorno(addmem)
@@ -448,7 +515,7 @@ with open(question, 'r') as openfile:
         # Displays avalible questions, what team is up, and asks what question that team picks
         while temptf != True:
             print('Avalible questions:')
-            printtable(gridfile)
+            printtable()
             print('\nTeam ' + str(currentteam) + ' is up!\nWhat question do they pick?')
             teamnumpicked = input('(int.) ')
             if teamnumpicked.lower() != 'score':
