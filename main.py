@@ -163,7 +163,6 @@ def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, 
             openfile.write('\n]')
         if teamsdone+1 == targetteam and int((teamsdone+1)) == int(numofteams):
             while temptf != True:
-                nmembers = input('(str.) ')
                 nmembers = nmembers.replace(' ', '", "')
                 nmembers = '["' + nmembers + '"]'
             temptf = False
@@ -177,7 +176,7 @@ def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, 
         json.dump(data, f, indent=4)
 
 # Adds team name to a team
-def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0, teamsdone: int | None = 0, teamlist: str | None = teamlist, temptf: bool | None = False) -> None:
+def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0, teamsdone: int | None = 0, teamlist: str | None = teamlist, temptf: bool | None = False, teamname: str | None = '') -> None:
 	with open(teamlist) as f:
 		prevdata = json.load(f)
 	with open(teamlist, 'w') as openfile:
@@ -190,16 +189,6 @@ def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0,
 				openfile.write(',\n')
 				teamsdone = teamsdone+1
 			if teamsdone+1 == targetteam and int((teamsdone+1)) < int(numofteams):
-				while temptf != True:
-					print('What is the new team name?')
-					teamname = input('(str.) ')
-					print('\n' + str(teamname) + ' - Please confim that this is the new name of the team')
-					conf = input('(y/n) ')
-					if yesorno(conf):
-						temptf = True
-						cs()
-					else: continue
-				temptf = False
 				scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "' + str(teamname) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
 				jsondata = json.loads(scoreset)
 				openfile.write(json.dumps(jsondata, indent=4))
@@ -211,16 +200,6 @@ def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0,
 			openfile.write(json.dumps(jsondata, indent=4))
 			openfile.write('\n]')
 		if teamsdone+1 == targetteam and int((teamsdone+1)) == int(numofteams):
-			while temptf != True:
-				print('What is the new team name?')
-				teamname = input('(str.) ')
-				print('\n' + str(teamname) + ' - Please confim that this is the new name of the team')
-				conf = input('(y/n) ')
-				if yesorno(conf):
-					temptf = True
-					cs()
-				else: continue
-			temptf = False
 			scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "' + str(teamname) + '","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
 			jsondata = json.loads(scoreset)
 			openfile.write(json.dumps(jsondata, indent=4))
@@ -408,10 +387,16 @@ while members == False and names == False:
                 if targettn == True:
                     teamnameadd.append(int(item))
 
-    nmembers = ''
-    for currteam in teammemadd:
+    nmembers = ''; tname = ''
+    for currteam in teammemadd: 
+        nmembers = '1' + str(currteam)
         addmembers(targetteam = int(currteam), nmembers = nmembers)
     members = True
+
+    for currteam in teamnameadd: 
+        tname = '1' + str(currteam)
+        addteamname(targetteam = int(currteam), teamname = tname)
+    names = True
 	
 # Addes Names to team (Team Names)
 while temptf != True:
