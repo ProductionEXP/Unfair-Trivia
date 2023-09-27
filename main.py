@@ -134,46 +134,46 @@ def addscorejson(team: int, teamnumpicked: int, teamlist: str | None = teamlist,
 		json.dump(data, f, indent=4)
 
 # Adds members to a team
-def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, teamsdone: int | None = 0, teamlist: str | None = teamlist, temptf: bool | None = False, nmembers: str | None = '') -> None:
-    with open(teamlist) as f:
-        prevdata = json.load(f)
-    with open(teamlist, 'w') as openfile:
-        openfile.write('[\n')
-        while int((teamsdone+1)) < int(numofteams):
-            if teamsdone+1 != targetteam:
-                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
-                jsondata = json.loads(scoreset)
-                openfile.write(json.dumps(jsondata, indent=4))
-                openfile.write(',\n')
-                teamsdone = teamsdone+1
-            if teamsdone+1 == targetteam and int((teamsdone+1)) < int(numofteams):
-                while temptf != True:
-                    nmembers = nmembers.replace(' ', '", "')
-                    nmembers = '["' + nmembers + '"]'
-                temptf = False
-                scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
-                jsondata = json.loads(scoreset)
-                openfile.write(json.dumps(jsondata, indent=4))
-                openfile.write(',\n')
-                teamsdone = teamsdone+1
-        if int((teamsdone+1)) == int(numofteams) and teamsdone+1 != targetteam:
-            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members']).replace("'", '"')) + '}'
-            jsondata = json.loads(scoreset)
-            openfile.write(json.dumps(jsondata, indent=4))
-            openfile.write('\n]')
-        if teamsdone+1 == targetteam and int((teamsdone+1)) == int(numofteams):
-            while temptf != True:
-                nmembers = nmembers.replace(' ', '", "')
-                nmembers = '["' + nmembers + '"]'
-            temptf = False
-            scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
-            jsondata = json.loads(scoreset)
-            openfile.write(json.dumps(jsondata, indent=4))
-            openfile.write('\n]')    
-    with open(teamlist) as f:
-        data = json.load(f)
-    with open(teamlist, 'w') as f:
-        json.dump(data, f, indent=4)
+def addmembers(numofteams: int | None = numofteams, targetteam: int | None = 0, teamsdone: int | None = 0, teamlist: str | None = teamlist, temptf: bool | None = False, nmembers: list | None = '') -> None:
+	with open(teamlist) as f:
+		prevdata = json.load(f)
+	with open(teamlist, 'w') as openfile:
+		openfile.write('[\n')
+		while int((teamsdone+1)) < int(numofteams):
+			if teamsdone+1 != targetteam:
+				scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members'])).replace("'", '"') + '}'
+				jsondata = json.loads(scoreset)
+				openfile.write(json.dumps(jsondata, indent=4))
+				openfile.write(',\n')
+				teamsdone = teamsdone+1
+			if teamsdone+1 == targetteam and int((teamsdone+1)) < int(numofteams):
+				while temptf != True:
+					nmembers = nmembers.replace(' ', '", "')
+					nmembers = '["' + nmembers + '"]'
+				temptf = False
+				scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
+				jsondata = json.loads(scoreset)
+				openfile.write(json.dumps(jsondata, indent=4))
+				openfile.write(',\n')
+				teamsdone = teamsdone+1
+		if int((teamsdone+1)) == int(numofteams) and teamsdone+1 != targetteam:
+			scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(str(prevdata[teamsdone]['members']).replace("'", '"')) + '}'
+			jsondata = json.loads(scoreset)
+			openfile.write(json.dumps(jsondata, indent=4))
+			openfile.write('\n]')
+		if teamsdone+1 == targetteam and int((teamsdone+1)) == int(numofteams):
+			while temptf != True:
+				nmembers = nmembers.replace(' ', '", "')
+				nmembers = '["' + nmembers + '"]'
+			temptf = False
+			scoreset = '{"team": "' + str((int(teamsdone)+1)) + '","teamname": "","score": "' + str(prevdata[teamsdone]['score']) + '","members": ' + str(nmembers) + '}'
+			jsondata = json.loads(scoreset)
+			openfile.write(json.dumps(jsondata, indent=4))
+			openfile.write('\n]')    
+	with open(teamlist) as f:
+		data = json.load(f)
+	with open(teamlist, 'w') as f:
+		json.dump(data, f, indent=4)
 
 # Adds team name to a team
 def addteamname(numofteams: int | None = numofteams, targetteam: int | None = 0, teamsdone: int | None = 0, teamlist: str | None = teamlist, temptf: bool | None = False, teamname: str | None = '') -> None:
@@ -335,68 +335,115 @@ genscoerfile(numofteams)
 
 # Adds members to teams
 while members == False and names == False:
-    #displays1 (display section 1)
-    displays1 = []; teamsdone = 0; teamup = 1; columnteams = []
-    while teamsdone < numofteams/2:
-        [templist1, templist2] = [[], []]
-        templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
-        templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
-        templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
-        templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
-        displays1.append(templist1)
-        displays1.append(templist2) 
-        columnteams.append(int(teamup))
-        teamup = teamup + 1
-        teamsdone = teamsdone + 1
+	#displays1 (display section 1)
+	displays1 = []; teamsdone = 0; teamup = 1; columnteams = []
+	while teamsdone < numofteams/2:
+		[templist1, templist2] = [[], []]
+		templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
+		templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
+		templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
+		templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
+		displays1.append(templist1)
+		displays1.append(templist2) 
+		columnteams.append(int(teamup))
+		teamup = teamup + 1
+		teamsdone = teamsdone + 1
 
-    #displays2 (display section 2)
-    displays2 = []; teamsdone = 0; teamup = int((numofteams/2)+1)
-    while teamsdone < numofteams/2:
-        [templist1, templist2] = [[], []]
-        templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
-        templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
-        templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
-        templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
-        displays2.append(templist1)
-        displays2.append(templist2)
-        columnteams.append(int(teamup))
-        teamup = teamup + 1
-        teamsdone = teamsdone + 1
+	#displays2 (display section 2)
+	displays2 = []; teamsdone = 0; teamup = int((numofteams/2)+1)
+	while teamsdone < numofteams/2:
+		[templist1, templist2] = [[], []]
+		templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
+		templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
+		templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
+		templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
+		displays2.append(templist1)
+		displays2.append(templist2)
+		columnteams.append(int(teamup))
+		teamup = teamup + 1
+		teamsdone = teamsdone + 1
 
-    teamnamememberslayout = [[sg.Text('Unfair Trivia - Adding Team Names and Members'), sg.Button('Skip', tooltip = 'Skip this section')],
+
+	teamnamememberslayout = [[sg.Text('Unfair Trivia - Adding Team Names and Members'), sg.Button('Skip', tooltip = 'Skip this section')],
 							 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
 							 [sg.Column(displays1, scrollable = True, vertical_scroll_only = True, size_subsample_height = 1.25, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True), 
 							  sg.Column(displays2, scrollable = True, vertical_scroll_only = True, size_subsample_height = 1.25, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True)
 							 ]
 							]
 
-    [templist1, templist2, displays1, displays2s] = [[], [], [], []]
+	[templist1, templist2, displays1, displays2s] = [[], [], [], []]
 	
-    teamnamememberswindow = sg.Window('Unfair Trivia - Team Names and Members', teamnamememberslayout, resizable = True)
+	teamnamememberswindow = sg.Window('Unfair Trivia - Team Names and Members', teamnamememberslayout, resizable = True)
 
-    while True:
-        event, values = teamnamememberswindow.read()
-        if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-        if event == 'Skip': teamnamememberswindow.close(); break
-        if event == 'Submit':
-            for item in columnteams:
-                targettn = str('tn' + str(int(item)))
-                targettm = str('tm' + str(int(item))) 
-                if targettm == True:
-                    teammemadd.append(int(item))
-                if targettn == True:
-                    teamnameadd.append(int(item))
+	while True:
+		event, values = teamnamememberswindow.read()
+		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+		if event == 'Skip': teamnamememberswindow.close(); break
+		if event == 'Submit':
+			for item in columnteams:
+				targettn = str('tn' + str(int(item)))
+				targettm = str('tm' + str(int(item)))
+				if values[targettm] == True:
+					teammemadd.append(int(item))
+				if values[targettn] == True:
+					teamnameadd.append(int(item))
+			teamnamememberswindow.close()	
+			break
+		
+	displays1 = []; displays2 = []; memberadd = []; nameadd = []; teammemaddstr = []; teamnameaddstr = []
 
-    nmembers = ''; tname = ''
-    for currteam in teammemadd: 
-        nmembers = '1' + str(currteam)
-        addmembers(targetteam = int(currteam), nmembers = nmembers)
-    members = True
+	if int(len(teammemadd)) + int(len(teamnameadd)) > 0:
+		for currteam in teamnameadd:
+			[templist1, templist2] = [[], []]
+			templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))))
+			templist1.append(sg.Text('\nTeam Name: '))
+			templist2.append(sg.Input(key = (str('tna' + str(int(currteam)))), tooltip = str('Add a Team name to team ' + str(int(currteam)))))
+			displays1.append(templist1)
+			displays1.append(templist2)
+			memberadd.append(int(teamup))
+		
+		for currteam in teammemadd:
+			[templist1, templist2] = [[], []]
+			templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))))
+			templist1.append(sg.Text('\nTeam Members: (Seperate by commas (,))'))
+			templist2.append(sg.Input(key = (str('tma' + str(int(currteam)))), tooltip = str('Add a Team name to team ' + str(int(currteam)))))
+			displays2.append(templist1)
+			displays2.append(templist2)
+			nameadd.append(int(teamup))
+		
+		namesandmemlayout =	[[sg.Text('Unfair Trivia - Adding Team Names and Members')],
+							 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+							 [sg.Column(displays1, scrollable = True, vertical_scroll_only = True, size_subsample_height = 1.25, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True), 
+							  sg.Column(displays2, scrollable = True, vertical_scroll_only = True, size_subsample_height = 1.25, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True)
+							 ]
+							]
+	
+		namesandmemwindow = sg.Window('Unfair Trivia - Team Names and Members', namesandmemlayout, resizable = True)
+		
+		while True:
+			event, values = namesandmemwindow.read()
+			if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+			if event == 'Submit':
+				for item in memberadd:
+					targettm = str('tma' + str(int(item)))
+				for item in nameadd:
+					targettn = str('tna' + str(int(item)))
+					teammemaddstr.append(values[targettm]) 
+				namesandmemwindow.close()	
+				break
 
-    for currteam in teamnameadd: 
-        tname = '1' + str(currteam)
-        addteamname(targetteam = int(currteam), teamname = tname)
-    names = True
+		nmembers = ''; tname = ''
+		for currteam in teammemaddstr: 
+			nmembers = '1' + str(currteam)
+			addmembers(targetteam = int(currteam), nmembers = nmembers)
+		members = True
+
+		for currteam in teamnameaddstr: 
+			tname = '1' + str(currteam)
+			addteamname(targetteam = int(currteam), teamname = tname)
+		names = True
+		
+	input()
 	
 # Addes Names to team (Team Names)
 while temptf != True:
