@@ -331,7 +331,8 @@ while teamnum == False:
 # Generate a score file for each team
 genscoerfile(numofteams)
 
-# Adds members to teams
+# Sees if the user wants to add members and team names to the teams
+# If the the user wants to they will then be able to add them to the corrasponding team
 while members == False and names == False:
 	#displays1 (display section 1)
 	displays1 = []; teamsdone = 0; teamup = 1; columnteams = []
