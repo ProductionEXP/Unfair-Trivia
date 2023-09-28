@@ -327,7 +327,7 @@ Updated play.py with every new fetures, full list:
     - Added ```members```
     - Changed formating
 - Added ```printmembers```, ```yesorno```, ```addmembers```, ```addteamname```
-- Updated ```printteams```, ```genscorefile```, ```addscorejson```
+- Updated ```printteams```, ```genscorefile```, ```a full rework of the interface of the Unfair-Trivia program```
 - Updated all code for ```teams.json```
 - Added the ability to add team names and members
 
@@ -342,4 +342,4 @@ Added ```test.py``` for development of new features before they are added to eit
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
 
-This is not as bad as I thought it was going to be. 
+The UI update focused on 
