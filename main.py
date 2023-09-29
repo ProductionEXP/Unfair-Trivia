@@ -482,7 +482,7 @@ while startteamtf != True:
 while directiontf != True:
 	directionuilayout = [[sg.Text('Unfair Trivia - Direction')],
 						 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
-						 [sg.Radio("Ascending", "ad", key='ada', enable_events=True, default=True), sg.Radio("Descending", "ad", key='add', enable_events=True)] 
+						 [sg.Radio("Ascending", "ad", key='ada', enable_events=True, default=True, tooltip = 'Have the teams go in ascending order (1 -> 2)'), sg.Radio("Descending", "ad", key='add', enable_events=True, tooltip = 'Have the teams go in descending order (2 -> 1)')] 
 						]
 	
 	directionuiwindow = sg.Window('Unfair Trivia - Team direction', directionuilayout, resizable = True)
