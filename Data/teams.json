@@ -1,17 +1,14 @@
 [
-{
-    "team": "1",
-    "teamname": "The Kings",
-    "score": "0",
-    "members": [
-        "SWTG",
-        " bob"
-    ]
-},
-{
-    "team": "2",
-    "teamname": "Braahms Lovers",
-    "score": "0",
-    "members": []
-}
+    {
+        "team": "1",
+        "teamname": "",
+        "score": "0",
+        "members": []
+    },
+    {
+        "team": "2",
+        "teamname": "",
+        "score": "0",
+        "members": []
+    }
 ]

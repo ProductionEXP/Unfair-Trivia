@@ -1,4 +1,4 @@
-searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = []; temptf2 = False; teamnameadd = []; gridd = False; teamnum = False; members = False; names = False
+searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = []; temptf2 = False; teamnameadd = []; gridd = False; teamnum = False; members = False; names = False; directiontf = False; startteamtf = False; exitsec = False
 
 from decimal import ROUND_DOWN
 from math import floor
@@ -238,22 +238,20 @@ while gridd == False:
 	while True:
 		event, values = griduiwindow.read()
 		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if len(values['rows']) and values['rows'][-1] not in ('0123456789'):
-			griduiwindow['rows'].update(values['rows'][:-1])
-		if len(values['columns']) and values['columns'][-1] not in ('0123456789'):
-			griduiwindow['columns'].update(values['columns'][:-1])
-		if values['rows'] == '' or isint(values['rows'], False) == False:
-			griduiwindow['rowsfail'].update('Input can not be blank\n')
-		if values['rows'] == '0':
-			griduiwindow['rowsfail'].update('Input can not be 0\n')   
-		elif values['rows'] != '0' and values['rows'] != '':
-			griduiwindow['rowsfail'].update('')
-		if values['columns'] == '' or isint(values['columns'], False) == False:
-			griduiwindow['columnsfail'].update('Input can not be blank\n')   
-		if values['columns'] == '0':
-			griduiwindow['columnsfail'].update('Input can not be 0\n')   
-		elif values['columns'] != '0' and values['columns'] != '':
-			griduiwindow['columnsfail'].update('')       
+		if len(values['rows']) and values['rows'][-1] not in ('0123456789'): griduiwindow['rows'].update(values['rows'][:-1])
+		else:
+			if values['rows'] == '' or isint(values['rows'], False) == False: griduiwindow['rowsfail'].update('Input can not be blank\n')
+			else:
+				if values['rows'] == '0': griduiwindow['rowsfail'].update('Input can not be 0\n') 
+				else:
+					griduiwindow['rowsfail'].update('')
+		if len(values['columns']) and values['columns'][-1] not in ('0123456789'): griduiwindow['columns'].update(values['columns'][:-1])
+		else:
+			if values['columns'] == '' or isint(values['columns'], False) == False: griduiwindow['columnsfail'].update('Input can not be blank\n')   
+			else:
+				if values['columns'] == '0': griduiwindow['columnsfail'].update('Input can not be 0\n')   
+				else:
+					griduiwindow['columnsfail'].update('')       
 		if isint(values['rows'], False) and isint(values['columns'], False) and int(values['rows'])*int(values['columns']) != int(numofquestions):
 			if int(values['rows'])*int(values['columns']) > int(numofquestions):
 				griduiwindow['fail'].update('Grid too large, try again')
@@ -314,14 +312,13 @@ while teamnum == False:
 	while True:
 		event, values = numberofteamswindow.read()
 		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if len(values['numoteam']) and values['numoteam'][-1] not in ('0123456789'):
-			numberofteamswindow['numoteam'].update(values['numoteam'][:-1])
-		if values['numoteam'] == '' or isint(values['numoteam'], False) == False:
-			numberofteamswindow['teamnumfail'].update('Input can not be blank\n')   
-		if values['numoteam'] == '0':
-			numberofteamswindow['teamnumfail'].update('Input can not be 0\n')   
-		elif values['numoteam'] != '0' and values['numoteam'] != '':
-			numberofteamswindow['teamnumfail'].update('')
+		if len(values['numoteam']) and values['numoteam'][-1] not in ('0123456789'): numberofteamswindow['numoteam'].update(values['numoteam'][:-1])
+		else:
+			if values['numoteam'] == '' or isint(values['numoteam'], False) == False: numberofteamswindow['teamnumfail'].update('Input can not be blank\n')   
+			else:
+				if values['numoteam'] == '0': numberofteamswindow['teamnumfail'].update('Input can not be 0\n')   
+				else:
+					numberofteamswindow['teamnumfail'].update('')
 		if event == 'Submit' and values['numoteam'] != '' and values['numoteam'] != '0':
 			numofteams = int(values['numoteam'])
 			break
@@ -382,7 +379,7 @@ while members == False and names == False:
 	while True:
 		event, values = teamnamememberswindow.read()
 		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if event == 'Skip': teamnamememberswindow.close(); break
+		if event == 'Skip': teamnamememberswindow.close(); exitsec = True ;break
 		if event == 'Submit':
 			for item in columnteams:
 				targettn = str('tn' + str(int(item)))
@@ -393,6 +390,8 @@ while members == False and names == False:
 					teamnameadd.append(int(item))
 			teamnamememberswindow.close()	
 			break
+	
+	if exitsec == True: members = False; names = False; break
 		
 	displays1 = []; displays2 = []; memberadd = []; nameadd = []; teammemaddstr = []; teamnameaddstr = []
 
@@ -453,26 +452,50 @@ while members == False and names == False:
 			tarteam = nameadd.pop(0)
 			addteamname(targetteam = tarteam, teamname = currteam, numofteams = numofteams)
 		names = True
+		
+while startteamtf != True:
+	stuilayout =	[[sg.Text('Unfair Trivia - Starting Team')],
+					 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+					 [sg.Input('', enable_events=True, key = 'startteamui')],
+					 [sg.Text('Input can not be blank\n', key='stfail',  text_color='red')]
+					]
+	
+	stuiwindow = sg.Window('Unfair Trivia - Starting Team', stuilayout, resizable = True)
+	while True:
+		event, values = stuiwindow.read()
+		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+		if len(values['startteamui']) and values['startteamui'][-1] not in ('0123456789'): stuiwindow['startteamui'].update(values['startteamui'][:-1])		
+		else:
+			if values['startteamui'] == '': stuiwindow['stfail'].update('Input can not be blank\n')  
+			else:
+				if int(values['startteamui']) > numofteams: stuiwindow['stfail'].update('Input can not be above the number of teams\n') 
+				else: 
+					if int(values['startteamui']) <= 0: stuiwindow['stfail'].update('Input can not be 0\n')
+					else: 
+						stuiwindow['stfail'].update('')	
+						if event == 'Submit':
+							startteam = int(values['startteamui'])
+							stuiwindow.close()
+							startteamtf = True
+							break
 
-# Figure out the starting team
-while temptf != True:
-	print('\nWhat team will be starting?')
-	startteam = input('(int.) ')
-	if isint(startteam):
-		temptf = True
-temptf = False
-
-# Figure out direction
-while temptf != True:
-	print('\nWhat direction are we going in?\nAscending(a), Ex. 1 > 2\nDescending(d), Ex. 2 > 1')
-	direction = input('(a/d) ')
-	if yesorno(direction, 'a', 'd'):
-		direction = 'a'
-		temptf = True
-	else:
-		direction = 'd'
-		temptf = True
-temptf = False
+while directiontf != True:
+	directionuilayout = [[sg.Text('Unfair Trivia - Direction')],
+						 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+						 [sg.Radio("Ascending", "ad", key='ada', enable_events=True, default=True), sg.Radio("Descending", "ad", key='add', enable_events=True)] 
+						]
+	
+	directionuiwindow = sg.Window('Unfair Trivia - Team direction', directionuilayout, resizable = True)
+	while True:
+		event, values = directionuiwindow.read()
+		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()	
+		if event == 'Submit':
+			if values['ada'] == True: direction = 'a'
+			elif values['add'] == True: direction = 'd'
+			directionuiwindow.close()
+			directiontf = True
+			break
+	
 
 # Defines first team
 currentteam = startteam
