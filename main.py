@@ -477,8 +477,7 @@ if useconfigdata != True:
 	while startteamtf != True:
 		stuilayout =	[[sg.Text('Unfair Trivia - Starting Team')],
 						 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
-						 [sg.Input('', enable_events=True, key = 'startteamui')],
-						 [sg.Text('Input can not be blank\n', key='stfail',  text_color='red')]
+						 [sg.Radio("Ascending", "ad", key='ada', enable_events=True, default=True, tooltip = 'Have the teams go in ascending order (1 -> 2)'), sg.Radio("Descending", "ad", key='add', enable_events=True, tooltip = 'Have the teams go in descending order (2 -> 1)')] 
 						]
 		
 		stuiwindow = sg.Window('Unfair Trivia - Starting Team', stuilayout, resizable = True)
