@@ -1,0 +1,22 @@
+[
+  {
+    "use": "True",
+    "endgame": ""
+  },
+  {
+    "grid": [ 1, 2 ],
+    "numofteams": 2,
+    "members": "False",
+    "teamnames": "False",
+    "startteam": 1,
+    "direction": "a"
+  },
+  {
+    "teammebers": [],
+    "teammebersteams": []
+  },
+  {
+    "teamnames": [],
+    "teamnamesteams": []
+  }
+]		

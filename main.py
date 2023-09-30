@@ -14,22 +14,18 @@ if os.name == 'nt':
 	question = os.path.join(main, 'Data\\questions.json')
 	gridfile = os.path.join(main, 'Data\\grid.txt')
 	teamlist = os.path.join(main, 'Data\\teams.json')
-	CleanScreen = 'cls'
+	configdata = os.path.join(main, 'Data\\preloadedconfig.json')
 
 elif os.name == 'posix':
 	question = 'Data\\questions.json'
 	grid = 'Data\\grid.txt'
 	teamlist = 'Data\\teams.json'
-	CleanScreen = 'clear'
-
-# Clearscreen
-def cs() -> None:
-	os.system(CleanScreen)
+	configdata = 'Data\\preloadedconfig.json'
 	
 # String conversion to list
 def Convert(string: str | None = False) -> list:
-			li = list(string.split(","))
-			return li
+	li = list(string.split(","))
+	return li
 
 # Generates a new table of questions
 def newtable(gridfile: str, columns: int, rows: int, pickednums: list | None = [], rowcylce: int | None = 0, columncylce: int | None = 0, num: int | None = 1) -> None:
@@ -215,290 +211,346 @@ with open(question, 'r') as openfile:
 	numofquestions = searchcycles
 	openfile.close
 
-cs()
-
 print('Number of questions: ' + str(numofquestions))
 
-# Has the user make a grid
-while gridd == False:
-	griduilayout =  [[sg.Text('Welcome to Unfair Trvia!')],
-					 [sg.Text(str('Number of questions: ' + str(numofquestions)))],
-					 [sg.Text('To Start fill out the feilds below: \n')],
-					 [sg.Text('How many rows do you want?')],
-					 [sg.Input('', enable_events=True,  key='rows', )],
-					 [sg.Text('Input can not be blank\n', key='rowsfail',  text_color='red')],
-					 [sg.Text('How many columns do you want?')],
-					 [sg.Input('', enable_events=True,  key='columns', )],
-					 [sg.Text('Input can not be blank\n', key='columnsfail', text_color='red')],
-					 [sg.Text(key='fail', text_color='red')],
-					 [sg.Button('Submit', visible=True, bind_return_key=True)]
-					]
-	griduiwindow = sg.Window('Unfair Trivia - Grid Setup', griduilayout)
 
-	while True:
-		event, values = griduiwindow.read()
-		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if len(values['rows']) and values['rows'][-1] not in ('0123456789'): griduiwindow['rows'].update(values['rows'][:-1])
-		else:
-			if values['rows'] == '' or isint(values['rows'], False) == False: griduiwindow['rowsfail'].update('Input can not be blank\n')
-			else:
-				if values['rows'] == '0': griduiwindow['rowsfail'].update('Input can not be 0\n') 
-				else:
-					griduiwindow['rowsfail'].update('')
-		if len(values['columns']) and values['columns'][-1] not in ('0123456789'): griduiwindow['columns'].update(values['columns'][:-1])
-		else:
-			if values['columns'] == '' or isint(values['columns'], False) == False: griduiwindow['columnsfail'].update('Input can not be blank\n')   
-			else:
-				if values['columns'] == '0': griduiwindow['columnsfail'].update('Input can not be 0\n')   
-				else:
-					griduiwindow['columnsfail'].update('')       
-		if isint(values['rows'], False) and isint(values['columns'], False) and int(values['rows'])*int(values['columns']) != int(numofquestions):
-			if int(values['rows'])*int(values['columns']) > int(numofquestions):
-				griduiwindow['fail'].update('Grid too large, try again')
-			elif int(values['rows'])*int(values['columns']) < int(numofquestions):
-				griduiwindow['fail'].update('Grid too small, try again')
-		else:
-			griduiwindow['fail'].update('')
-		if isint(values['rows'], False) and isint(values['columns'], False): 
-			if event == 'Submit' and int(values['rows'])*int(values['columns']) == int(numofquestions):
-				griduiwindow['fail'].update('')
-				print('You have submited a grid of ' + str((int(values['rows'])*int(values['columns']))) + ' questions.\nIn a grid of ' + values['rows'] + 'x' + values['columns'])
-				columns = values['columns']
-				rows = values['rows']
-				break
-	griduiwindow.close()
+# If a user has a config file and wants to use the settings from that instead of entering new ones we grab the data from the file
+with open(configdata, 'r') as openfile:
+	loadedconfigdata = json.load(openfile)
+	endgame = loadedconfigdata[0]['endgame']
+if loadedconfigdata[0]['use'] == 'True':
+	newtable(gridfile, int(loadedconfigdata[1]['grid'][1]), int(loadedconfigdata[1]['grid'][0]))
+	numofteams = int(loadedconfigdata[1]['numofteams'])
+	currentteam = int(loadedconfigdata[1]['startteam'])
+	direction = str(loadedconfigdata[1]['direction'])
+	if str(loadedconfigdata[1]['members']) == 'True':
+		teammemnum = loadedconfigdata[2]['teammebersteams']
+		teammemstr = loadedconfigdata[2]['teammebers']
+		for currteam in teammemstr: 
+			tarteam = teammemnum.pop(0)
+			addmembers(targetteam = tarteam, nmembers = currteam, numofteams = numofteams)	
+	if str(loadedconfigdata[1]['teamnames']) == 'True':
+		teamnemnum = loadedconfigdata[3]['teamnamesteams']
+		teamnemstr = loadedconfigdata[3]['teamnames']
+		for currteam in teamnemstr: 
+			tarteam = teamnemnum.pop(0)
+			addteamname(targetteam = tarteam, teamname = currteam, numofteams = numofteams)
+				
 
-	newtable(gridfile, columns, rows, pickednums)
-	with open(gridfile, 'r') as openfile:
-		grid = openfile.read()
-		openfile.close()
+	useconfigdata = True
+else: useconfigdata = False
 
-	gridcheckuilayout = [[sg.Text(grid)],
-						 [sg.Text('\nYou entered a grid of ' + str(rows) + 'x' + str(columns))],
-						 [sg.Text('Please confrim that this grid is correct')],
-						 [sg.Button('Yes', visible=True, bind_return_key=True), sg.Button('No', visible=True)]
+if useconfigdata != True:
+	# Has the user make a grid
+	while gridd == False:
+		griduilayout =  [[sg.Text('Welcome to Unfair Trvia!')],
+						 [sg.Text(str('Number of questions: ' + str(numofquestions)))],
+						 [sg.Text('To Start fill out the feilds below: \n')],
+						 [sg.Text('How many rows do you want?')],
+						 [sg.Input('', enable_events=True,  key='rows', )],
+						 [sg.Text('Input can not be blank\n', key='rowsfail',  text_color='red')],
+						 [sg.Text('How many columns do you want?')],
+						 [sg.Input('', enable_events=True,  key='columns', )],
+						 [sg.Text('Input can not be blank\n', key='columnsfail', text_color='red')],
+						 [sg.Text(key='fail', text_color='red')],
+						 [sg.Button('Submit', visible=True, bind_return_key=True)]
 						]
-
-	gridcheckuiwindow = sg.Window('Unfair Trivia - Grid Confirmation', gridcheckuilayout)
-
-	while True:
-		event, values = gridcheckuiwindow.read()
-		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if event == 'Yes':
-			gridd = True
-			gridcheckuiwindow.close()
-			break
-		elif event == 'No':
-			gridd = False
-			gridcheckuiwindow.close()
-			break
-
-
-# Prints first table
-printtable()
-
-# Prints how many questions remain
-print(str(numofquestions - len(pickednums)) + ' Questions Remain')
-
-# Figure out how many teams are playing
-while teamnum == False:
-	numberofteamslayout =   [[sg.Text('How many teams are playing?')],
-							 [sg.Input('', enable_events=True,  key='numoteam', )],
-							 [sg.Text('Input can not be blank\n', key='teamnumfail',  text_color='red')],
-							 [sg.Button('Submit', visible=True, bind_return_key=True)]
-							]
-	numberofteamswindow = sg.Window('Unfair Trivia - Number Of Teams', numberofteamslayout)
-
-	while True:
-		event, values = numberofteamswindow.read()
-		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if len(values['numoteam']) and values['numoteam'][-1] not in ('0123456789'): numberofteamswindow['numoteam'].update(values['numoteam'][:-1])
-		else:
-			if values['numoteam'] == '' or isint(values['numoteam'], False) == False: numberofteamswindow['teamnumfail'].update('Input can not be blank\n')   
-			else:
-				if values['numoteam'] == '0': numberofteamswindow['teamnumfail'].update('Input can not be 0\n')   
-				else:
-					numberofteamswindow['teamnumfail'].update('')
-		if event == 'Submit' and values['numoteam'] != '' and values['numoteam'] != '0':
-			numofteams = int(values['numoteam'])
-			break
-	numberofteamswindow.close()    
-	teamnum = True
-
-# Generate a score file for each team
-genscoerfile(numofteams)
-
-# Sees if the user wants to add members and team names to the teams
-# If the the user wants to they will then be able to add them to the corrasponding team
-while members == False and names == False:
-	#displays1 (display section 1)
-	displays1 = []; teamsdone = 0; teamup = 1; columnteams = []
-	while teamsdone < numofteams/2:
-		[templist1, templist2] = [[], []]
-		templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
-		templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
-		templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
-		templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
-		displays1.append(templist1)
-		displays1.append(templist2) 
-		columnteams.append(int(teamup))
-		teamup = teamup + 1
-		teamsdone = teamsdone + 1
-
-	#displays2 (display section 2)
-	displays2 = []; teamsdone = 0
-	while teamsdone < floor(numofteams/2):
-		[templist1, templist2] = [[], []]
-		templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
-		templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
-		templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
-		templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
-		displays2.append(templist1)
-		displays2.append(templist2)
-		columnteams.append(int(teamup))
-		teamup = teamup + 1
-		teamsdone = teamsdone + 1
-
-	if numofteams <= 2: ssh1 = 1
-	if numofteams > 2: ssh1 = 1.25
-	if numofteams >= 20: ssh1 = 2
-	if numofteams >= 50: ssh1 = 5
-	if numofteams >= 100: ssh1 = 10
-
-	teamnamememberslayout = [[sg.Text('Unfair Trivia - Adding Team Names and Members'), sg.Button('Skip', tooltip = 'Skip this section')],
-							 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
-							 [sg.Column(displays1, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh1, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True), 
-							  sg.Column(displays2, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh1, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True)
-							 ]
-							]
-
-	[templist1, templist2, displays1, displays2s] = [[], [], [], []]
+		griduiwindow = sg.Window('Unfair Trivia - Grid Setup', griduilayout)
 	
-	teamnamememberswindow = sg.Window('Unfair Trivia - Team Names and Members', teamnamememberslayout, resizable = True)
-
-	while True:
-		event, values = teamnamememberswindow.read()
-		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if event == 'Skip': teamnamememberswindow.close(); exitsec = True ;break
-		if event == 'Submit':
-			for item in columnteams:
-				targettn = str('tn' + str(int(item)))
-				targettm = str('tm' + str(int(item)))
-				if values[targettm] == True:
-					teammemadd.append(int(item))
-				if values[targettn] == True:
-					teamnameadd.append(int(item))
-			teamnamememberswindow.close()	
-			break
-	
-	if exitsec == True: members = False; names = False; break
-		
-	displays1 = []; displays2 = []; memberadd = []; nameadd = []; teammemaddstr = []; teamnameaddstr = []
-
-	if int(len(teammemadd)) + int(len(teamnameadd)) > 0:
-		for currteam in teamnameadd:
-			[templist1, templist2] = [[], []]
-			templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))))
-			templist1.append(sg.Text('\n\nTeam Name: '))
-			templist2.append(sg.Input(key = (str('tna' + str(int(currteam)))), tooltip = str('Add a Team name to team ' + str(int(currteam)))))
-			displays1.append(templist1)
-			displays1.append(templist2)
-			nameadd.append(int(currteam))
-		
-		for currteam in teammemadd:
-			[templist1, templist2] = [[], []]
-			templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))))
-			templist1.append(sg.Text('\n\nTeam Members: (Seperate by commas (,))'))
-			templist2.append(sg.Input(key = (str('tma' + str(int(currteam)))), tooltip = str('Add a Team members to team ' + str(int(currteam)))))
-			displays2.append(templist1)
-			displays2.append(templist2)
-			memberadd.append(int(currteam))
-		
-		if int(len(teammemadd)) + int(len(teamnameadd)) <= 2: ssh = 1
-		if int(len(teammemadd)) + int(len(teamnameadd)) > 2: ssh = 1.25
-		if int(len(teammemadd)) + int(len(teamnameadd)) >= 20: ssh = 2
-		if int(len(teammemadd)) + int(len(teamnameadd)) >= 50: ssh = 5
-		if int(len(teammemadd)) + int(len(teamnameadd)) >= 100: ssh = 10
-	
-		namesandmemlayout =	[[sg.Text('Unfair Trivia - Adding Team Names and Members')],
-							 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
-							 [sg.Column(displays1, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True), 
-							  sg.Column(displays2, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True)
-							 ]
-							]
-	
-		namesandmemwindow = sg.Window('Unfair Trivia - Team Names and Members', namesandmemlayout, resizable = True)
-
 		while True:
-			event, values = namesandmemwindow.read()
+			event, values = griduiwindow.read()
 			if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-			if event == 'Submit':
-				for item in memberadd:
-					targettm = str('tma' + str(int(item)))
-					teammemaddstr.append(Convert(values[targettm]))
-				for item in nameadd:
-					targettn = str('tna' + str(int(item)))
-					teamnameaddstr.append(values[targettn]) 
-				namesandmemwindow.close()
+			if len(values['rows']) and values['rows'][-1] not in ('0123456789'): griduiwindow['rows'].update(values['rows'][:-1])
+			else:
+				if values['rows'] == '' or isint(values['rows'], False) == False: griduiwindow['rowsfail'].update('Input can not be blank\n')
+				else:
+					if values['rows'] == '0': griduiwindow['rowsfail'].update('Input can not be 0\n') 
+					else:
+						griduiwindow['rowsfail'].update('')
+			if len(values['columns']) and values['columns'][-1] not in ('0123456789'): griduiwindow['columns'].update(values['columns'][:-1])
+			else:
+				if values['columns'] == '' or isint(values['columns'], False) == False: griduiwindow['columnsfail'].update('Input can not be blank\n')   
+				else:
+					if values['columns'] == '0': griduiwindow['columnsfail'].update('Input can not be 0\n')   
+					else:
+						griduiwindow['columnsfail'].update('')       
+			if isint(values['rows'], False) and isint(values['columns'], False) and int(values['rows'])*int(values['columns']) != int(numofquestions):
+				if int(values['rows'])*int(values['columns']) > int(numofquestions):
+					griduiwindow['fail'].update('Grid too large, try again')
+				elif int(values['rows'])*int(values['columns']) < int(numofquestions):
+					griduiwindow['fail'].update('Grid too small, try again')
+			else:
+				griduiwindow['fail'].update('')
+			if isint(values['rows'], False) and isint(values['columns'], False): 
+				if event == 'Submit' and int(values['rows'])*int(values['columns']) == int(numofquestions):
+					griduiwindow['fail'].update('')
+					print('You have submited a grid of ' + str((int(values['rows'])*int(values['columns']))) + ' questions.\nIn a grid of ' + values['rows'] + 'x' + values['columns'])
+					columns = values['columns']
+					rows = values['rows']
+					break
+		griduiwindow.close()
+	
+		newtable(gridfile, columns, rows, pickednums)
+		with open(gridfile, 'r') as openfile:
+			grid = openfile.read()
+			openfile.close()
+	
+		gridcheckuilayout = [[sg.Text(grid)],
+							 [sg.Text('\nYou entered a grid of ' + str(rows) + 'x' + str(columns))],
+							 [sg.Text('Please confrim that this grid is correct')],
+							 [sg.Button('Yes', visible=True, bind_return_key=True), sg.Button('No', visible=True)]
+							]
+	
+		gridcheckuiwindow = sg.Window('Unfair Trivia - Grid Confirmation', gridcheckuilayout)
+	
+		while True:
+			event, values = gridcheckuiwindow.read()
+			if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+			if event == 'Yes':
+				gridd = True
+				gridcheckuiwindow.close()
+				break
+			elif event == 'No':
+				gridd = False
+				gridcheckuiwindow.close()
 				break
 			
-		nmembers = ''; tname = ''
-		for currteam in teammemaddstr: 
-			tarteam = memberadd.pop(0)
-			addmembers(targetteam = tarteam, nmembers = currteam, numofteams = numofteams)
-		members = True
-
-		for currteam in teamnameaddstr: 
-			tarteam = nameadd.pop(0)
-			addteamname(targetteam = tarteam, teamname = currteam, numofteams = numofteams)
-		names = True
-		
-while startteamtf != True:
-	stuilayout =	[[sg.Text('Unfair Trivia - Starting Team')],
-					 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
-					 [sg.Input('', enable_events=True, key = 'startteamui')],
-					 [sg.Text('Input can not be blank\n', key='stfail',  text_color='red')]
-					]
+			
+	# Prints first table
+	printtable()
 	
-	stuiwindow = sg.Window('Unfair Trivia - Starting Team', stuilayout, resizable = True)
-	while True:
-		event, values = stuiwindow.read()
-		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
-		if len(values['startteamui']) and values['startteamui'][-1] not in ('0123456789'): stuiwindow['startteamui'].update(values['startteamui'][:-1])		
-		else:
-			if values['startteamui'] == '': stuiwindow['stfail'].update('Input can not be blank\n')  
+	# Prints how many questions remain
+	print(str(numofquestions - len(pickednums)) + ' Questions Remain')
+	
+	# Figure out how many teams are playing
+	while teamnum == False:
+		numberofteamslayout =   [[sg.Text('How many teams are playing?')],
+								 [sg.Input('', enable_events=True,  key='numoteam', )],
+								 [sg.Text('Input can not be blank\n', key='teamnumfail',  text_color='red')],
+								 [sg.Button('Submit', visible=True, bind_return_key=True)]
+								]
+		numberofteamswindow = sg.Window('Unfair Trivia - Number Of Teams', numberofteamslayout)
+	
+		while True:
+			event, values = numberofteamswindow.read()
+			if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+			if len(values['numoteam']) and values['numoteam'][-1] not in ('0123456789'): numberofteamswindow['numoteam'].update(values['numoteam'][:-1])
 			else:
-				if int(values['startteamui']) > numofteams: stuiwindow['stfail'].update('Input can not be above the number of teams\n') 
-				else: 
-					if int(values['startteamui']) <= 0: stuiwindow['stfail'].update('Input can not be 0\n')
-					else: 
-						stuiwindow['stfail'].update('')	
-						if event == 'Submit':
-							startteam = int(values['startteamui'])
-							stuiwindow.close()
-							startteamtf = True
-							break
-
-while directiontf != True:
-	directionuilayout = [[sg.Text('Unfair Trivia - Direction')],
+				if values['numoteam'] == '' or isint(values['numoteam'], False) == False: numberofteamswindow['teamnumfail'].update('Input can not be blank\n')   
+				else:
+					if values['numoteam'] == '0': numberofteamswindow['teamnumfail'].update('Input can not be 0\n')   
+					else:
+						numberofteamswindow['teamnumfail'].update('')
+			if event == 'Submit' and values['numoteam'] != '' and values['numoteam'] != '0':
+				numofteams = int(values['numoteam'])
+				break
+		numberofteamswindow.close()    
+		teamnum = True
+	
+	# Generate a score file for each team
+	genscoerfile(numofteams)
+	
+	# Sees if the user wants to add members and team names to the teams
+	# If the the user wants to they will then be able to add them to the corrasponding team
+	while members == False and names == False:
+		#displays1 (display section 1)
+		displays1 = []; teamsdone = 0; teamup = 1; columnteams = []
+		while teamsdone < numofteams/2:
+			[templist1, templist2] = [[], []]
+			templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
+			templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
+			templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
+			templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
+			displays1.append(templist1)
+			displays1.append(templist2) 
+			columnteams.append(int(teamup))
+			teamup = teamup + 1
+			teamsdone = teamsdone + 1
+	
+		#displays2 (display section 2)
+		displays2 = []; teamsdone = 0
+		while teamsdone < floor(numofteams/2):
+			[templist1, templist2] = [[], []]
+			templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())))
+			templist1.append(sg.Text('\nWould you like to add a team name or team members?'))
+			templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))))
+			templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))))
+			displays2.append(templist1)
+			displays2.append(templist2)
+			columnteams.append(int(teamup))
+			teamup = teamup + 1
+			teamsdone = teamsdone + 1
+	
+		if numofteams <= 2: ssh1 = 1
+		if numofteams > 2: ssh1 = 1.25
+		if numofteams >= 20: ssh1 = 2
+		if numofteams >= 50: ssh1 = 5
+		if numofteams >= 100: ssh1 = 10
+	
+		teamnamememberslayout = [[sg.Text('Unfair Trivia - Adding Team Names and Members'), sg.Button('Skip', tooltip = 'Skip this section')],
+								 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+								 [sg.Column(displays1, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh1, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True), 
+								  sg.Column(displays2, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh1, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True)
+								 ]
+								]
+	
+		[templist1, templist2, displays1, displays2s] = [[], [], [], []]
+		
+		teamnamememberswindow = sg.Window('Unfair Trivia - Team Names and Members', teamnamememberslayout, resizable = True)
+	
+		while True:
+			event, values = teamnamememberswindow.read()
+			if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+			if event == 'Skip': teamnamememberswindow.close(); exitsec = True ;break
+			if event == 'Submit':
+				for item in columnteams:
+					targettn = str('tn' + str(int(item)))
+					targettm = str('tm' + str(int(item)))
+					if values[targettm] == True:
+						teammemadd.append(int(item))
+					if values[targettn] == True:
+						teamnameadd.append(int(item))
+				teamnamememberswindow.close()	
+				break
+			
+		if exitsec == True: members = False; names = False; break
+			
+		displays1 = []; displays2 = []; memberadd = []; nameadd = []; teammemaddstr = []; teamnameaddstr = []
+	
+		if int(len(teammemadd)) + int(len(teamnameadd)) > 0:
+			for currteam in teamnameadd:
+				[templist1, templist2] = [[], []]
+				templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))))
+				templist1.append(sg.Text('\n\nTeam Name: '))
+				templist2.append(sg.Input(key = (str('tna' + str(int(currteam)))), tooltip = str('Add a Team name to team ' + str(int(currteam)))))
+				displays1.append(templist1)
+				displays1.append(templist2)
+				nameadd.append(int(currteam))
+			
+			for currteam in teammemadd:
+				[templist1, templist2] = [[], []]
+				templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))))
+				templist1.append(sg.Text('\n\nTeam Members: (Seperate by commas (,))'))
+				templist2.append(sg.Input(key = (str('tma' + str(int(currteam)))), tooltip = str('Add a Team members to team ' + str(int(currteam)))))
+				displays2.append(templist1)
+				displays2.append(templist2)
+				memberadd.append(int(currteam))
+			
+			if int(len(teammemadd)) + int(len(teamnameadd)) <= 2: ssh = 1
+			if int(len(teammemadd)) + int(len(teamnameadd)) > 2: ssh = 1.25
+			if int(len(teammemadd)) + int(len(teamnameadd)) >= 20: ssh = 2
+			if int(len(teammemadd)) + int(len(teamnameadd)) >= 50: ssh = 5
+			if int(len(teammemadd)) + int(len(teamnameadd)) >= 100: ssh = 10
+		
+			namesandmemlayout =	[[sg.Text('Unfair Trivia - Adding Team Names and Members')],
+								 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+								 [sg.Column(displays1, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True), 
+								  sg.Column(displays2, scrollable = True, vertical_scroll_only = True, size_subsample_height = ssh, vertical_alignment = 'center', expand_x = True, sbar_background_color = 'black', expand_y = True)
+								 ]
+								]
+		
+			namesandmemwindow = sg.Window('Unfair Trivia - Team Names and Members', namesandmemlayout, resizable = True)
+	
+			while True:
+				event, values = namesandmemwindow.read()
+				if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+				if event == 'Submit':
+					for item in memberadd:
+						targettm = str('tma' + str(int(item)))
+						teammemaddstr.append(Convert(values[targettm]))
+					for item in nameadd:
+						targettn = str('tna' + str(int(item)))
+						teamnameaddstr.append(values[targettn]) 
+					namesandmemwindow.close()
+					break
+				
+			for currteam in teammemaddstr: 
+				tarteam = memberadd.pop(0)
+				addmembers(targetteam = tarteam, nmembers = currteam, numofteams = numofteams)
+			members = True
+	
+			for currteam in teamnameaddstr: 
+				tarteam = nameadd.pop(0)
+				addteamname(targetteam = tarteam, teamname = currteam, numofteams = numofteams)
+			names = True
+			
+	while startteamtf != True:
+		stuilayout =	[[sg.Text('Unfair Trivia - Starting Team')],
 						 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
-						 [sg.Radio("Ascending", "ad", key='ada', enable_events=True, default=True), sg.Radio("Descending", "ad", key='add', enable_events=True)] 
+						 [sg.Input('', enable_events=True, key = 'startteamui')],
+						 [sg.Text('Input can not be blank\n', key='stfail',  text_color='red')]
 						]
+		
+		stuiwindow = sg.Window('Unfair Trivia - Starting Team', stuilayout, resizable = True)
+		while True:
+			event, values = stuiwindow.read()
+			if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+			if len(values['startteamui']) and values['startteamui'][-1] not in ('0123456789'): stuiwindow['startteamui'].update(values['startteamui'][:-1])		
+			else:
+				if values['startteamui'] == '': stuiwindow['stfail'].update('Input can not be blank\n')  
+				else:
+					if int(values['startteamui']) > numofteams: stuiwindow['stfail'].update('Input can not be above the number of teams\n') 
+					else: 
+						if int(values['startteamui']) <= 0: stuiwindow['stfail'].update('Input can not be 0\n')
+						else: 
+							stuiwindow['stfail'].update('')	
+							if event == 'Submit':
+								startteam = int(values['startteamui'])
+								stuiwindow.close()
+								startteamtf = True
+								break
+							
+	while directiontf != True:
+		directionuilayout = [[sg.Text('Unfair Trivia - Direction')],
+							 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+							 [sg.Radio("Ascending", "ad", key='ada', enable_events=True, default=True), sg.Radio("Descending", "ad", key='add', enable_events=True)] 
+							]
+		
+		directionuiwindow = sg.Window('Unfair Trivia - Team direction', directionuilayout, resizable = True)
+		while True:
+			event, values = directionuiwindow.read()
+			if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()	
+			if event == 'Submit':
+				if values['ada'] == True: direction = 'a'
+				elif values['add'] == True: direction = 'd'
+				directionuiwindow.close()
+				directiontf = True
+				break
+			
+			
+	# Defines first team
+	currentteam = startteam
 	
-	directionuiwindow = sg.Window('Unfair Trivia - Team direction', directionuilayout, resizable = True)
-	while True:
-		event, values = directionuiwindow.read()
-		if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()	
-		if event == 'Submit':
-			if values['ada'] == True: direction = 'a'
-			elif values['add'] == True: direction = 'd'
-			directionuiwindow.close()
-			directiontf = True
-			break
-	
+mainloopuilayout =	[[sg.Text('Unfair Trivia - The Game')],
+					 [sg.Text('\nCurrent Grid:')],
+					 [sg.Text(printtable(p = False))],
+					 [sg.Text('\nTotal Questions remaining: ' + str(numofquestions - len(pickednums)), key = 'tqr')],
+					 [sg.Text('\nTeam ' + str(currentteam) + ' is up!\nWhat question do they pick?', key = 'tnumup')],
+					 [sg.Input('', enable_events = True, key = 'quespick'), sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+					 [sg.Text('Input can not be blank\n', key='quespickfail',  text_color='red')]
+					]
 
-# Defines first team
-currentteam = startteam
+mainloopuiwindow = sg.Window('Unfair Trvia - The Game', mainloopuilayout, resizable = True)
+
+while True:
+	event, values = mainloopuiwindow.read()
+	if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+	if len(values['quespick']) and values['quespick'][-1] not in ('0123456789'): mainloopuiwindow['quespick'].update(values['quespick'][:-1])		
+	else:
+		if values['quespick'] == '': mainloopuiwindow['quespickfail'].update('Input can not be blank\n')  
+		else:
+			if int(values['quespick']) in pickednums: mainloopuiwindow['quespickfail'].update('Question was already picked\n') 
+			else: 
+				if int(values['quespick']) > int(numofquestions): mainloopuiwindow['quespickfail'].update('Question does not exist\n') 
+				else:
+					if int(values['quespick']) <= 0: mainloopuiwindow['quespickfail'].update('Input can not be 0\n')
+					else: 
+						mainloopuiwindow['quespickfail'].update('')	
+						if event == 'Submit':
+							mainloopuiwindow.close()
+							break
+							
+# Old loop
 with open(question, 'r') as openfile:
 	questions = json.load(openfile)
 	while int(numofquestions - len(pickednums)) > 0:
@@ -507,7 +559,6 @@ with open(question, 'r') as openfile:
 
 		# Generates new table
 		newtable(gridfile, columns, rows, pickednums)
-		cs()
 
 		# Displays avalible questions, what team is up, and asks what question that team picks
 		while temptf != True:
@@ -531,10 +582,8 @@ with open(question, 'r') as openfile:
 				# Prints all team's scores 
 				printteams(numofteams)
 				input('\n\nPress enter to continue')
-				cs()
 				continue
 		temptf = False
-		cs()
 
 		# Figure out if the team is keeping or giving the points
 		while temptf != True:
@@ -567,7 +616,6 @@ with open(question, 'r') as openfile:
 			keepgive = 'keeping the points'
 		if korg == False:
 			keepgive = 'giving the points to ' + str(giveteam)
-		cs()
 
 		# Displays question, team number, keeping or giving points, and anwser to the question, then asks the user if
 		# the team got the question right
@@ -608,9 +656,9 @@ with open(question, 'r') as openfile:
 			elif int(currentteam) == 1:
 				currentteam = int(numofteams)
 
-# Display fianl scores
+# Display Final scores
 newtable(gridfile, columns, rows, pickednums)
-cs()
 print('Endgame!\nCurrent scores are:')
 printteams(numofteams)
+print('Your endgame note: ' + str(endgame))
 input('Press enter to exit')
