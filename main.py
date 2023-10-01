@@ -1,6 +1,5 @@
-searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = []; temptf2 = False; teamnameadd = []; gridd = False; teamnum = False; members = False; names = False; directiontf = False; startteamtf = False; exitsec = False
+searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns = 0; rowcylce = 0; rownum = 1; num = 1; columncylce = 0; pickednums = []; temptf = False; dt = 1; numofteams = 0; teammemadd = []; temptf2 = False; teamnameadd = []; gridd = False; teamnum = False; members = False; names = False; directiontf = False; startteamtf = False; exitsec = False; output = ''
 
-from decimal import ROUND_DOWN
 from math import floor
 import os
 import json
@@ -60,6 +59,18 @@ def printmembers(targetteam: int, teamlist: str | None = teamlist) -> None:
 			print(memberslist.pop())
 		print()
 
+# Prints current list of members for a single team 
+def returnmembers(targetteam: int, teamlist: str | None = teamlist, output: str | None = '') -> str:
+	with open(teamlist) as openfile:
+		scoresnteams = json.load(openfile)
+		output = output + 'Members:'
+		while int(len(scoresnteams[int(targetteam)]['members'])) > 0:
+			memberslist = scoresnteams[int(targetteam)]['members']
+			output = output + (memberslist.pop())
+		output = output + '\n'
+	return output
+
+
 # Prints current lits of teams and scores
 def printteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None = teamlist) -> None:
 	with open(teamlist) as openfile:
@@ -74,7 +85,25 @@ def printteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None 
 				print(scoresnteams[doneteams-1]['teamname'] + ': ' + scoresnteams[doneteams-1]['score'])
 				if scoresnteams[doneteams-1]['members'] != []:
 					printmembers(doneteams-1)
-				doneteams = doneteams + 1     
+				doneteams = doneteams + 1  
+				
+# Prints current lits of teams and scores
+def returnteams(numofteams: int, doneteams: int | None = 1, teamlist: str | None = teamlist, output: str | None = '') -> str:
+	with open(teamlist) as openfile:
+		scoresnteams = json.load(openfile)
+		while int(doneteams) <= int(numofteams):
+			if str(scoresnteams[doneteams-1]['teamname']) == '':
+				output = output + ('\nTeam ' + str(scoresnteams[doneteams-1]['team']) + ': ' + str(scoresnteams[doneteams-1]['score']))
+				if scoresnteams[doneteams-1]['members'] != []:
+					output = output + returnmembers(doneteams-1)
+				doneteams = doneteams + 1
+			elif str(scoresnteams[doneteams-1]['teamname']) != '':
+				output = output + ('\n' + str(scoresnteams[doneteams-1]['teamname']) + ': ' + str(scoresnteams[doneteams-1]['score']))
+				if scoresnteams[doneteams-1]['members'] != []:
+					output = output + returnmembers(doneteams-1)
+				doneteams = doneteams + 1   
+	return output  
+
 
 # Check if a string (any) is an integer
 def isint(number: any, printi: bool | None = True) -> bool:
@@ -546,9 +575,12 @@ while True:
 					else: 
 						mainloopuiwindow['quespickfail'].update('')	
 						if event == 'Submit':
+							teamnumpicked = int(values['quespick'])
 							mainloopuiwindow.close()
 							break
-							
+				
+returnteams(numofteams)						
+
 # Old loop
 with open(question, 'r') as openfile:
 	questions = json.load(openfile)
