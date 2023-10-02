@@ -549,13 +549,15 @@ if useconfigdata != True:
 	# Defines first team
 	currentteam = startteam
 	
-mainloopuilayout =	[[sg.Text('Unfair Trivia - The Game')],
-					 [sg.Text('\nCurrent Grid:')],
-					 [sg.Text(printtable(p = False))],
-					 [sg.Text('\nTotal Questions remaining: ' + str(numofquestions - len(pickednums)), key = 'tqr')],
-					 [sg.Text('\nTeam ' + str(currentteam) + ' is up!\nWhat question do they pick?', key = 'tnumup')],
-					 [sg.Input('', enable_events = True, key = 'quespick'), sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
-					 [sg.Text('Input can not be blank\n', key='quespickfail',  text_color='red')]
+mainloopuilayout =	[
+					 [[sg.Text('Unfair Trivia - The Game')],
+					  [sg.Text('\nCurrent Grid:')],
+					  [sg.Text(printtable(p = False))],
+ 					  [sg.Text('\nTotal Questions remaining: ' + str(numofquestions - len(pickednums)), key = 'tqr')],
+ 					  [sg.Text('\nTeam ' + str(currentteam) + ' is up!\nWhat question do they pick?', key = 'tnumup')],
+ 					  [sg.Input('', enable_events = True, key = 'quespick'), sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section')],
+					  [sg.Text('Input can not be blank\n', key='quespickfail',  text_color='red')]
+					 ]
 					]
 
 mainloopuiwindow = sg.Window('Unfair Trvia - The Game', mainloopuilayout, resizable = True)
