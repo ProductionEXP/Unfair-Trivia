@@ -576,10 +576,36 @@ while True:
 						mainloopuiwindow['quespickfail'].update('')	
 						if event == 'Submit':
 							teamnumpicked = int(values['quespick'])
-							mainloopuiwindow.close()
+							mainloopuiwindow['quespick'].update('')
+							#mainloopuiwindow.close()
 							break
 				
 returnteams(numofteams)						
+
+mainloopuilayout =  [[sg.Text('test')],
+					 [sg.Text('Worked')]
+					]
+
+mainloopuiwindow = sg.Window('Unfair Trvia - The Game', mainloopuilayout, resizable = True)
+
+while True:
+	event, values = mainloopuiwindow.read()
+	if event in (None, 'Exit') or event == sg.WINDOW_CLOSED: exit()
+	if len(values['quespick']) and values['quespick'][-1] not in ('0123456789'): mainloopuiwindow['quespick'].update(values['quespick'][:-1])		
+	else:
+		if values['quespick'] == '': mainloopuiwindow['quespickfail'].update('Input can not be blank\n')  
+		else:
+			if int(values['quespick']) in pickednums: mainloopuiwindow['quespickfail'].update('Question was already picked\n') 
+			else: 
+				if int(values['quespick']) > int(numofquestions): mainloopuiwindow['quespickfail'].update('Question does not exist\n') 
+				else:
+					if int(values['quespick']) <= 0: mainloopuiwindow['quespickfail'].update('Input can not be 0\n')
+					else: 
+						mainloopuiwindow['quespickfail'].update('')	
+						if event == 'Submit':
+							teamnumpicked = int(values['quespick'])
+							mainloopuiwindow.close()
+							break
 
 # Old loop
 with open(question, 'r') as openfile:
