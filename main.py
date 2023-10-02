@@ -578,7 +578,7 @@ while True:
 						mainloopuiwindow['quespickfail'].update('')	
 						if event == 'Submit':
 							teamnumpicked = int(values['quespick'])
-							mainloopuiwindow['quespick'].update('')
+							mainloopuilayout[0].update('')
 							#mainloopuiwindow.close()
 							break
 				
