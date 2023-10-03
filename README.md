@@ -45,13 +45,14 @@ In unfair trivia you have the option to add team names and members, when you see
 ---
 ## Running The Game
 
-Needs to be updated.
+Once the game has started, either after setup or loading data from the config file, you are shown the grid, the scores (top left), what teams turn it is, and how many questions remain. After the team picks a question enter it in the text box, and it submit. After that pick if the team wants to keep or give the points, after you select hit submit. If the team gives the points away you can enter the team they are giving the points to, once done it Next!.
 
 ---
 ## UI
 ###### Understanding the UI
 
-I need to do this.
+General rules for understanding the Unfair Trivia GUI, 
+- Below every text input there should be red text telling you if your input for that section 
 
 ---
 ## Endgame
