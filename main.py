@@ -13,13 +13,13 @@ if os.name == 'nt':
 	question = os.path.join(main, 'Data\\questions.json')
 	gridfile = os.path.join(main, 'Data\\grid.txt')
 	teamlist = os.path.join(main, 'Data\\teams.json')
-	configdata = os.path.join(main, 'Data\\preloadedconfig.json')
+	configdata = os.path.join(main, 'Data\\config.json')
 
 elif os.name == 'posix':
 	question = 'Data\\questions.json'
 	grid = 'Data\\grid.txt'
 	teamlist = 'Data\\teams.json'
-	configdata = 'Data\\preloadedconfig.json'
+	configdata = 'Data\\config.json'
 	
 # String conversion to list
 def Convert(string: str | None = False) -> list:
@@ -222,7 +222,10 @@ with open(configdata, 'r') as openfile:
 	endgame = loadedconfigdata[0]['endgame']
 if loadedconfigdata[0]['use'] == 'True':
 	newtable(gridfile, int(loadedconfigdata[1]['grid'][1]), int(loadedconfigdata[1]['grid'][0]))
+	columns = int(loadedconfigdata[1]['grid'][1])
+	rows = int(loadedconfigdata[1]['grid'][0])
 	numofteams = int(loadedconfigdata[1]['numofteams'])
+	genscoerfile(numofteams)
 	currentteam = int(loadedconfigdata[1]['startteam'])
 	direction = str(loadedconfigdata[1]['direction'])
 	if str(loadedconfigdata[1]['members']) == 'True':
@@ -377,10 +380,10 @@ if useconfigdata != True:
 		displays1 = []; teamsdone = 0; teamup = 1; columnteams = []
 		while teamsdone < numofteams/2:
 			[templist1, templist2] = [[], []]
-			templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())), font = font_string)
-			templist1.append(sg.Text('\nWould you like to add a team name or team members?'), font = font_string)
-			templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))), font = font_string)
-			templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))), font = font_string)
+			templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str()), font = font_string))
+			templist1.append(sg.Text('\nWould you like to add a team name or team members?', font = font_string))
+			templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup))), font = font_string))
+			templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup))), font = font_string))
 			displays1.append(templist1)
 			displays1.append(templist2) 
 			columnteams.append(int(teamup))
@@ -391,10 +394,10 @@ if useconfigdata != True:
 		displays2 = []; teamsdone = 0
 		while teamsdone < floor(numofteams/2):
 			[templist1, templist2] = [[], []]
-			templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str())), font = font_string)
-			templist1.append(sg.Text('\nWould you like to add a team name or team members?'), font = font_string)
-			templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup)))), font = font_string)
-			templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup)))), font = font_string)
+			templist1.append(sg.Text(str('\nTeam ' + str(int(teamup)) + '\nMembers: ' + str() + '\nTeam Name: ' + str()), font = font_string))
+			templist1.append(sg.Text('\nWould you like to add a team name or team members?', font = font_string))
+			templist2.append(sg.Checkbox('Team Name', key = (str('tn' + str(int(teamup)))), tooltip = str('Add a Team name to team ' + str(int(teamup))), font = font_string))
+			templist2.append(sg.Checkbox('Team Members', key = (str('tm' + str(int(teamup)))), tooltip = str('Add a Team members to team ' + str(int(teamup))), font = font_string))
 			displays2.append(templist1)
 			displays2.append(templist2)
 			columnteams.append(int(teamup))
@@ -440,18 +443,18 @@ if useconfigdata != True:
 		if int(len(teammemadd)) + int(len(teamnameadd)) > 0:
 			for currteam in teamnameadd:
 				[templist1, templist2] = [[], []]
-				templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))), font = font_string)
-				templist1.append(sg.Text('\n\nTeam Name: '), font = font_string)
-				templist2.append(sg.Input(key = (str('tna' + str(int(currteam)))), tooltip = str('Add a Team name to team ' + str(int(currteam)))), font = font_string)
+				templist1.append(sg.Text(str('\nTeam ' + str(int(currteam))), font = font_string))
+				templist1.append(sg.Text('\n\nTeam Name: ', font = font_string))
+				templist2.append(sg.Input(key = (str('tna' + str(int(currteam)))), tooltip = str('Add a Team name to team ' + str(int(currteam))), font = font_string))
 				displays1.append(templist1)
 				displays1.append(templist2)
 				nameadd.append(int(currteam))
 			
 			for currteam in teammemadd:
 				[templist1, templist2] = [[], []]
-				templist1.append(sg.Text(str('\nTeam ' + str(int(currteam)))), font = font_string)
-				templist1.append(sg.Text('\n\nTeam Members: (Seperate by commas (,))'), font = font_string)
-				templist2.append(sg.Input(key = (str('tma' + str(int(currteam)))), tooltip = str('Add a Team members to team ' + str(int(currteam)))), font = font_string)
+				templist1.append(sg.Text(str('\nTeam ' + str(int(currteam))), font = font_string))
+				templist1.append(sg.Text('\n\nTeam Members: (Seperate by commas (,))', font = font_string))
+				templist2.append(sg.Input(key = (str('tma' + str(int(currteam)))), tooltip = str('Add a Team members to team ' + str(int(currteam))), font = font_string))
 				displays2.append(templist1)
 				displays2.append(templist2)
 				memberadd.append(int(currteam))
@@ -497,7 +500,9 @@ if useconfigdata != True:
 	while startteamtf != True:
 		stuilayout =	[[sg.Text('Unfair Trivia - Starting Team', font = font_string)],
 						 [sg.Button('Submit', visible=True, bind_return_key=True, tooltip = 'Submit the data for this section', font = font_string)],
-						 [sg.Radio("Ascending", "ad", key='ada', enable_events=True, default=True, tooltip = 'Have the teams go in ascending order (1 -> 2)', font = font_string), sg.Radio("Descending", "ad", key='add', enable_events=True, tooltip = 'Have the teams go in descending order (2 -> 1)', font = font_string)] 
+						 [sg.Text('What team will be starting?', font = font_string)],
+						 [sg.Input(key = 'startteamui')],
+						 [sg.Text('Input can not be blank\n', key='stfail',  text_color='red', font = font_string)],
 						]
 		
 		stuiwindow = sg.Window('Unfair Trivia - Starting Team', stuilayout, resizable = True)
@@ -535,8 +540,6 @@ if useconfigdata != True:
 				directionuiwindow.close()
 				directiontf = True
 				break
-			
-			
 	# Defines first team
 	currentteam = startteam
 
@@ -601,23 +604,6 @@ while int(numofquestions - len(pickednums)) > 0:
 				mainloopuiwindowquestionsettings['Next!'].update(visible=True)
 				mainloopuiwindowquestionsettings['givepointspickfail'].update(visible=True)
 				event, values = mainloopuiwindowquestionsettings.read()
-				if len(values['givepointspick']) and values['givepointspick'][-1] not in ('0123456789'): mainloopuiwindowquestionsettings['givepointspick'].update(values['givepointspick'][:-1])		
-				else:
-					event, values = mainloopuiwindowquestionsettings.read()
-					if values['givepointspick'] == '': mainloopuiwindowquestionsettings['givepointspickfail'].update('Input can not be blank\n')  
-					else:
-						event, values = mainloopuiwindowquestionsettings.read()
-						if int(values['givepointspick']) > numofteams: mainloopuiwindowquestionsettings['givepointspickfail'].update('Input can not be above the number of teams\n') 
-						else: 
-							event, values = mainloopuiwindowquestionsettings.read()
-							if int(values['givepointspick']) <= 0: mainloopuiwindowquestionsettings['givepointspickfail'].update('Input can not be 0\n')
-							else: 
-								mainloopuiwindowquestionsettings['givepointspickfail'].update('')	
-								event, values = mainloopuiwindowquestionsettings.read()
-								if event == 'Next!': 
-									giveteam = int(values['givepointspick'])
-									mainloopuiwindowquestionsettings.close()
-									break
 			else:
 				korg = False
 				mainloopuiwindowquestionsettings['s1'].update(visible=False)
@@ -626,6 +612,23 @@ while int(numofquestions - len(pickednums)) > 0:
 				mainloopuiwindowquestionsettings['givepointspickfail'].update(visible=False)
 				mainloopuiwindowquestionsettings.close()
 				break
+
+		if values['keep'] == False:
+				if len(values['givepointspick']) and values['givepointspick'][-1] not in ('0123456789'): mainloopuiwindowquestionsettings['givepointspick'].update(values['givepointspick'][:-1])		
+				else:
+					if values['givepointspick'] == '': mainloopuiwindowquestionsettings['givepointspickfail'].update('Input can not be blank\n')  
+					else:
+						if int(values['givepointspick']) > numofteams: mainloopuiwindowquestionsettings['givepointspickfail'].update('Input can not be above the number of teams\n') 
+						else:
+							if int(values['givepointspick']) <= 0: mainloopuiwindowquestionsettings['givepointspickfail'].update('Input can not be 0\n')
+							else: 
+								if int(values['givepointspick']) == currentteam: mainloopuiwindowquestionsettings['givepointspickfail'].update('The team can' + "'" + 't give points to themselves\n')
+								else: 
+									mainloopuiwindowquestionsettings['givepointspickfail'].update('')
+									if event == 'Next!': 
+										giveteam = int(values['givepointspick'])
+										mainloopuiwindowquestionsettings.close()
+										break
 
 	if korg == False:
 			keepgive = 'keeping the points'
@@ -655,9 +658,9 @@ while int(numofquestions - len(pickednums)) > 0:
 			break
 
 	# Updates the correct team's score for either keeping or giving points
-	if teamquescorrect == True and korg == True:
+	if teamquescorrect == True and korg == False:
 		addscorejson(currentteam, teamnumpicked)
-	elif teamquescorrect == True and korg == False:
+	elif teamquescorrect == True and korg == True:
 		addscorejson(giveteam, teamnumpicked)
 
 	# Remove the question from the table
