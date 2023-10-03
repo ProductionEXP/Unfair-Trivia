@@ -40,11 +40,12 @@ The first think the program promts you with is a text size selector, if you wish
 ---
 ###### Adding members / team names
 
-I need to do this.
+In unfair trivia you have the option to add team names and members, when you see this screen, ![Team member and name selection section](Data/README.md%20Data/image.png) You can chose to use the checkboxes and select what teams you want to have team names/members, once you have selected the teams you want, hit submit. If you don't want to add any team names and any team members, hit skip.
 
 ---
 ## Running The Game
-Once setup is compleate the game will display available questions and what teams is up to pick a question. After the team picks a question, it will then display the team # and the question #, then ask if they are keeping or giving the points, if they are giving it will then ask the team that they are giving the points to. After that it will display What team is up, what question, if they are keeping or giving the points, and to who, then what the question is and it's answer, it will then ask you if they got the question correct. It is within your own judgement if the anwser is correct, the computer will only display one possible anwser. This prosses repeats until there is no more questions. 
+
+Needs to be updated.
 
 ---
 ## UI
@@ -69,7 +70,43 @@ Instead of running the game you can play it, the prosess to do this is the same 
 ## Config
 ###### Setting up the config file
 
-I need to do this.
+In Unfair Trivia there is the option to instead of adding the data for the game by anwsering questions that the game promts you with, to instead add the data by putting the data into ```config.json```, the defult file format for this file is:
+```
+[
+  {
+    "use": "False",
+    "endgame": ""
+  },
+  {
+    "grid": [ 1, 2 ],
+    "numofteams": 2,
+    "members": "False",
+    "teamnames": "False",
+    "startteam": 1,
+    "direction": "a"
+  },
+  {
+    "teammebers": [],
+    "teammebersteams": []
+  },
+  {
+    "teamnames": [],
+    "teamnamesteams": []
+  }
+]		
+```
+The first section (the one that has ```"use"``` and ```"endgame"```), has two parts, the first part, ```"use"```, dertermins if the data stored below will be used for the program, If you wish to use the data replace the ```"False",``` with ```"True",```. Make sure all of the data is formated correctly. 
+
+Because this is the first itteration of this, if you use the config file ALL data must be in the config file.
+
+The second part of the first section, ```"endgame"```, holds a "endgame note", this note is displayed after the game is over, it is a note to determin the winner. Example: 
+```
+"endgame": "If the dice rolls 1 or 4 highest score wins, if the dice rolls 2 or 5 lowest score wins, and if it rolls 5 or 6 closest score to a prime number wins"
+```
+
+###### Adjusting the config data
+
+###### Adding Team Names and Members in the config file
 
 ---
 ## Adding/Changing Questions

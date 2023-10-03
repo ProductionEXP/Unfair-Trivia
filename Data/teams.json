@@ -2,13 +2,13 @@
     {
         "team": "1",
         "teamname": "",
-        "score": "5",
+        "score": "0",
         "members": []
     },
     {
         "team": "2",
         "teamname": "",
-        "score": "-5",
+        "score": "0",
         "members": []
     }
 ]
