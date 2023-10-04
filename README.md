@@ -395,7 +395,7 @@ Added ```test.py``` for development of new features before they are added to eit
 
 ---
 ### [V4 - The UI Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
-###### Release Date: 10/6/2023 (projected)
+###### Release Date: 10/4/2023 (projected)
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ###### Special thanks: [PySimpleGUI](https://github.com/PySimpleGUI)
 ##
