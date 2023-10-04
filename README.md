@@ -52,7 +52,10 @@ Once the game has started, either after setup or loading data from the config fi
 ###### Understanding the UI
 
 General rules for understanding the Unfair Trivia GUI, 
-- Below every text input there should be red text telling you if your input for that section 
+- Below every text input there should be red text telling you if your input for that section mets the requirments for that secton.
+- Once the game is running scores are always displayed in the top left.
+- The ```submit``` button will, if all inputs are correct, move you on to the next section.
+- If the close the window, not minimize, the program will exit.
 
 ---
 ## Endgame
@@ -106,8 +109,42 @@ The second part of the first section, ```"endgame"```, holds a "endgame note", t
 ```
 
 ###### Adjusting the config data
+To change the data in the config file you will need to know two things, the format, and where to edit. The format for the config file is as follows:
+```
+[
+  {
+    "use": "{str}",
+    "endgame": "{str}"
+  },
+  {
+    "grid": [{int}, {int}],
+    "numofteams": {int},
+    "members": "{str}",
+    "teamnames": "{str}",
+    "startteam": {int},
+    "direction": "{str}"
+  },
+  {
+    "teammebers": [{list of {int}}],
+    "teammebersteams": [{list of {list of {str}}}]
+  },
+  {
+    "teamnames": {list of {int}}[],
+    "teamnamesteams": [{list of {str}}]
+  }
+]		
+```
+What is inside of the ```{}``` is the format, if it is ```{str}``` the input can be anything as long as it is in the quotation marks. If it is ```{int}``` it can only be numbers, this input should not have quotation marks. If it is ```{list of {}}``` that means it is a lise, ex. ```[1, 2, 3, 4]```, made up of the second format string.
+
+For the inputs of ```use```, ```members```, and ```teamnames```, if you want to use these their ```{str}``` must be ```True``` (in the quotation marks). 
+
+For the input of ```grid```, the first ```{int}``` is how many rows you want in the grid, and the second ```{int}``` is how many coloums you want.
+
+For the input of ```direction```, the ```{str}``` is either ```a``` or ```d```, Ascending or Descending respectively. 
 
 ###### Adding Team Names and Members in the config file
+
+If you want to add members or team names to the teams, you have to add the team number in the ```teammebers``` or ```teamnames``` list, and the in the same order the ```teammebersteams``` or ```teamnamesteams```. When adding members you add a list within the list for every team, ex. ```[["bob", "joe"], ["ryan", "chris"]]```.
 
 ---
 ## Adding/Changing Questions
