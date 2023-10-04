@@ -6,11 +6,6 @@
 In the game of unfair tivia you do not know how many points each question is worth, it could be a positve or negitive number. You also do not know what the criteria is to win,  it could be who ever has the lowest score.
 
 ---
-## Repository Info
-
-This repo IS maintaianed, please submit an issue if you have a request or a bug.
-
----
 ## Rules
 
 - Each team can either chose to keep or give points to another team, this will only happen if they get the question correct
@@ -22,7 +17,9 @@ This repo IS maintaianed, please submit an issue if you have a request or a bug.
 
 ---
 ## Setup
-Either download the program from the green ```<>code``` button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your spescifided location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you are ready to start, double click the .py file (```main.py```), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#addingchanging-questions), the ```(int.) ``` before your cursor tells you what type of input is required.
+Either download the program from the green ```<>code``` button, [here](https://github.com/ProductionEXP/Unfair-Trivia), or from the newest relese, [here](https://github.com/ProductionEXP/Unfair-Trivia/releases). Once that is done unpack the zip file in your specified location, if you dont have python download the latest version from [here](https://www.python.org/downloads/). Once you have both python and the program installed you need to install PySimpleGUI look [here](https://github.com/PySimpleGUI/PySimpleGUI#installing--) for instructions on how to do so. After all of the prerequisites are installed you are ready to start, double click the .py file (```main.py```), and you are in! Upon starting you are asked to make a grid for the number of questions you have, see [Addding/Changing Questions](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#addingchanging-questions).
+
+###### As of V4 this table is only useful for ```play.py```
 | Tag       | Expination                        | Example       |
 | --------- | --------------------------------- | ------------- |
 | (int.)    | Integer                           | 1             |
@@ -33,63 +30,118 @@ Either download the program from the green ```<>code``` button, [here](https://g
 | (str.)    | Just a plain string of text       | Hello World   |
 | (anw.)    | User anwser, can be int or str    | USA           |
 
-After every input you must press enter to continue. Before it askes you ```How many teams are playing?```, it will show you the current table and how many questions remain. After you enter the number of teams playing it will ask what team is starting, this number must be less than or equal to the number of teams. After that you chose the direction, once that is done setup is compleate.
+After every input you must press enter to continue, or the submit button. 
+
+The first think the program promts you with is a text size selector, if you wish to keep it at 12 you can just hit submit, once you have chosen your font size, hit submit. This font size will not change untill you close the program and select a new font size.
 
 ---
-###### Adding members
+###### Adding members / team names
 
-If you want to add members to a team or all teams, after entering how many teams are playing the game will ask you, ```Would you like to add members to teams?```, after this all that has to be done is follow the instructions givin by the game. When you add members to a team it will remove all previous members, so remember to add all member vs just the new ones.
-
-Once you are done adding team members, when the game asks you, ```What team are you adding members to?```, enter ```exit``` and you will be onto the next step.
-
----
-###### Adding team names
-
-After you either add team members or you chose to skip that step you are asked, ```Would you like to add team names to teams?```, if you want to add team names to any of the teams you can. When you add a team name it will remove the previous name and replace it with the new name.
-
-Once you are done adding team names, when the game asks you, ```What team are you adding a team name to?```, enter ```exit``` and you will be onto the next step.
+In unfair trivia you have the option to add team names and members, when you see this screen, ![Team member and name selection section](Data/README.md%20Data/image.png) You can chose to use the checkboxes and select what teams you want to have team names/members, once you have selected the teams you want, hit submit. If you don't want to add any team names and any team members, hit skip.
 
 ---
 ## Running The Game
-Once setup is compleate the game will display available questions and what teams is up to pick a question. After the team picks a question, it will then display the team # and the question #, then ask if they are keeping or giving the points, if they are giving it will then ask the team that they are giving the points to. After that it will display What team is up, what question, if they are keeping or giving the points, and to who, then what the question is and it's answer, it will then ask you if they got the question correct. It is within your own judgement if the anwser is correct, the computer will only display one possible anwser. This prosses repeats until there is no more questions. 
 
-If at any point you want to see the scores of the teams, when it asks ```What question do they pick?``` just type ```score```, and it will display the scores.
+Once the game has started, either after setup or loading data from the config file, you are shown the grid, the scores (top left), what teams turn it is, and how many questions remain. After the team picks a question enter it in the text box, and it submit. After that pick if the team wants to keep or give the points, after you select hit submit. If the team gives the points away you can enter the team they are giving the points to, once done it Next!.
+
+---
+## UI
+###### Understanding the UI
+
+General rules for understanding the Unfair Trivia GUI, 
+- Below every text input there should be red text telling you if your input for that section mets the requirments for that secton.
+- Once the game is running scores are always displayed in the top left.
+- The ```submit``` button will, if all inputs are correct, move you on to the next section.
+- If the close the window, not minimize, the program will exit.
 
 ---
 ## Endgame
-Upon entering engame the code will display the scores and then exit, if the terminal closes the scores are located in ```teams.json``` in here you will find a data set that has the team number and score for that team. It could look somthing like this:
-```
-[
-    {
-        "team": "1",
-        "teamname": "The Dogs",
-        "score": "21",
-        "members": [
-            "bob",
-            "joE"
-        ]
-    },
-    {
-        "team": "2",
-        "teamname": "The Cats",
-        "score": "-5",
-        "members": [
-            "Ryan"
-        ]
-    }
-]
-```
-The team and score for every team is dispalyed. Along with the team name and members if applicable. 
+Upon entering engame, the game will end and it will display the scores, team name, and team members of each team. It will then show a endgame note, if one was provided in the config file, ```config.json```. To add an endgame note look [here](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Config).
 
-This is where the programs stops it's job and you have to do yours.
-
-Before the game started you should have picked some winnging critrea now is the time to figure out the winner, let's say that your criteria was, ```If the dice rolls 1 or 4 highest score wins, if the dice rolls 2 or 5 lowest score wins, and if it rolls 5 or 6 closest score to a prime number wins```. All you would have to do is roll a dice and look at the scores to determin a winner. Congrats you have just played the game of unfair trivia!
+With this endgame note, let's use ```If the dice rolls 1 or 4 highest score wins, if the dice rolls 2 or 5 lowest score wins, and if it rolls 5 or 6 closest score to a prime number wins``` as an example, all you would have to do is roll a dice and look at the scores to determin a winner, and then congrats you have just played the game of unfair trivia!
 
 ---
-## Playing the game 
+## Playing the game
 Instead of running the game you can play it, the prosess to do this is the same as if you where running the game, you will do setup the same, but instead of running ```main.py``` you need to run ```play.py```. after that everything is the same. Once you get to playing the game part instead of telling you the anwser it will ask you for the anwser, your anwser can be right but the anwser might not be in the data base, you can manually add points by typing ```madd``` when it asks you ```What question do you pick?``` it will then ask you for a team # and then how many points you want to add or remove, you can remove points by putting a negitve sign in front of the number you input.  
 
 ### ```play.py``` IS TIPICALY AN OLDER VERSION OF ```main.py```
+#### As of the UI update (V4) ```play.py``` has NOT been updated
+
+---
+## Config
+###### Setting up the config file
+
+In Unfair Trivia there is the option to instead of adding the data for the game by anwsering questions that the game promts you with, to instead add the data by putting the data into ```config.json```, the defult file format for this file is:
+```
+[
+  {
+    "use": "False",
+    "endgame": ""
+  },
+  {
+    "grid": [ 1, 2 ],
+    "numofteams": 2,
+    "members": "False",
+    "teamnames": "False",
+    "startteam": 1,
+    "direction": "a"
+  },
+  {
+    "teammebers": [],
+    "teammebersteams": []
+  },
+  {
+    "teamnames": [],
+    "teamnamesteams": []
+  }
+]		
+```
+The first section (the one that has ```"use"``` and ```"endgame"```), has two parts, the first part, ```"use"```, dertermins if the data stored below will be used for the program, If you wish to use the data replace the ```"False",``` with ```"True",```. Make sure all of the data is formated correctly. 
+
+Because this is the first itteration of this, if you use the config file ALL data must be in the config file.
+
+The second part of the first section, ```"endgame"```, holds a "endgame note", this note is displayed after the game is over, it is a note to determin the winner. Example: 
+```
+"endgame": "If the dice rolls 1 or 4 highest score wins, if the dice rolls 2 or 5 lowest score wins, and if it rolls 5 or 6 closest score to a prime number wins"
+```
+
+###### Adjusting the config data
+To change the data in the config file you will need to know two things, the format, and where to edit. The format for the config file is as follows:
+```
+[
+  {
+    "use": "{str}",
+    "endgame": "{str}"
+  },
+  {
+    "grid": [{int}, {int}],
+    "numofteams": {int},
+    "members": "{str}",
+    "teamnames": "{str}",
+    "startteam": {int},
+    "direction": "{str}"
+  },
+  {
+    "teammebers": [{list of {int}}],
+    "teammebersteams": [{list of {list of {str}}}]
+  },
+  {
+    "teamnames": {list of {int}}[],
+    "teamnamesteams": [{list of {str}}]
+  }
+]		
+```
+What is inside of the ```{}``` is the format, if it is ```{str}``` the input can be anything as long as it is in the quotation marks. If it is ```{int}``` it can only be numbers, this input should not have quotation marks. If it is ```{list of {}}``` that means it is a lise, ex. ```[1, 2, 3, 4]```, made up of the second format string.
+
+For the inputs of ```use```, ```members```, and ```teamnames```, if you want to use these their ```{str}``` must be ```True``` (in the quotation marks). 
+
+For the input of ```grid```, the first ```{int}``` is how many rows you want in the grid, and the second ```{int}``` is how many coloums you want.
+
+For the input of ```direction```, the ```{str}``` is either ```a``` or ```d```, Ascending or Descending respectively. 
+
+###### Adding Team Names and Members in the config file
+
+If you want to add members or team names to the teams, you have to add the team number in the ```teammebers``` or ```teamnames``` list, and the in the same order the ```teammebersteams``` or ```teamnamesteams```. When adding members you add a list within the list for every team, ex. ```[["bob", "joe"], ["ryan", "chris"]]```.
 
 ---
 ## Adding/Changing Questions
@@ -329,7 +381,7 @@ Updated play.py with every new fetures, full list:
     - Added ```members```
     - Changed formating
 - Added ```printmembers```, ```yesorno```, ```addmembers```, ```addteamname```
-- Updated ```printteams```, ```genscorefile```, ```addscorejson```
+- Updated ```printteams```, ```genscorefile```, ```a full rework of the interface of the Unfair-Trivia program```
 - Updated all code for ```teams.json```
 - Added the ability to add team names and members
 
@@ -339,9 +391,31 @@ Added a function to see if a user input is either a or b (See [setup](https://gi
 Added ```test.py``` for development of new features before they are added to either ```main.py``` or ```play.py```, then bugfixed. This is an internal development file, serves no outside purpose.   
 
 ---
-### [V4 - The UI Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4)
-###### Release Date: ?
+### [V4 - The UI Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
+###### Release Date: 10/4/2023 (projected)
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
+###### Special thanks: [PySimpleGUI](https://github.com/PySimpleGUI)
 ##
 
-This will be pain.
+In short, a rework of the whole system.
+
+Shortened Changelog:
+
+- General Updates
+    - Removed all command promt interaction, all done through [UI](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#UI) now
+    - Added the ability to pre-load data, see [Config](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Config) for more information
+
+- Notes
+    - UI update will be brought to ```play.py``` in [V4.1](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4)
+
+###### UI
+The main focus of this update is moving away from a command promt interface to a graphical user interface. The primary reason for this is to make this program more user-friendly. All of the UI was done through [PySimpleGUI](https://github.com/PySimpleGUI/PySimpleGUI), because of this it is required, if not already installed, to install PySimpleGUI, to see how to do this look [here](https://github.com/PySimpleGUI/PySimpleGUI#installing--).
+
+For more information on this section, look [here](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#UI)
+
+###### Config
+This is a file, ```config.json``` under the ```Data``` folder, that stores a set of json data that is loaded at the begening of the program, as of right now all of the data the user would have to enter durring the startup of the program must EITHER be in ```config.json``` or be entered through the program. This will be fixed in a latter update.
+
+This allows the user to skip the setup and start running the game faster. 
+
+See [Config](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Config) for more information, and how to set up this file.

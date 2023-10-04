@@ -1,1 +1,14 @@
-
+[
+    {
+        "team": "1",
+        "teamname": "",
+        "score": "0",
+        "members": []
+    },
+    {
+        "team": "2",
+        "teamname": "",
+        "score": "0",
+        "members": []
+    }
+]
