@@ -391,8 +391,8 @@ Added a function to see if a user input is either a or b (See [setup](https://gi
 Added ```test.py``` for development of new features before they are added to either ```main.py``` or ```play.py```, then bugfixed. This is an internal development file, serves no outside purpose.   
 
 ---
-### [V4 - The UI Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
-###### Release Date: 10/4/2023 (projected)
+### [V4 - The UI Update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4)
+###### Release Date: 10/4/2023
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ###### Special thanks: [PySimpleGUI](https://github.com/PySimpleGUI)
 ##
@@ -419,3 +419,11 @@ This is a file, ```config.json``` under the ```Data``` folder, that stores a set
 This allows the user to skip the setup and start running the game faster. 
 
 See [Config](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Config) for more information, and how to set up this file.
+
+---
+### [V4.1 - PLaying the UI update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
+###### Release Date: 11/6/2023
+###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
+###### Special thanks: [PySimpleGUI](https://github.com/PySimpleGUI)
+##
+
