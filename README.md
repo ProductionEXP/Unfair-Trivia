@@ -406,7 +406,7 @@ Shortened Changelog:
     - Added the ability to pre-load data, see [Config](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Config) for more information
 
 - Notes
-    - UI update will be brought to ```play.py``` in [V4.1](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4)
+    - UI update will be brought to ```play.py``` in [V5.1](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4)
 
 ###### UI
 The main focus of this update is moving away from a command promt interface to a graphical user interface. The primary reason for this is to make this program more user-friendly. All of the UI was done through [PySimpleGUI](https://github.com/PySimpleGUI/PySimpleGUI), because of this it is required, if not already installed, to install PySimpleGUI, to see how to do this look [here](https://github.com/PySimpleGUI/PySimpleGUI#installing--).
