@@ -423,7 +423,7 @@ This allows the user to skip the setup and start running the game faster.
 See [Config](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Config) for more information, and how to set up this file.
 
 ---
-### [V5 - New UI Syste,](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
+### [V5 - New UI System](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
 ###### Release Date: ?
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
 ##
