@@ -3,6 +3,8 @@
 ###### Code by: [Bryce B.](https://github.com/ProductionEXP) 
 ###### Idea by: [Gary K. Herberger Young Scholars Academy](https://herbergeracademy.asu.edu)
 
+## CURRENTLY BROKEN
+
 In the game of unfair tivia you do not know how many points each question is worth, it could be a positve or negitive number. You also do not know what the criteria is to win,  it could be who ever has the lowest score.
 
 ---
