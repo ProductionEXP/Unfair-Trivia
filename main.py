@@ -3,7 +3,7 @@ searchcycles = 0; grid = False; rows = 0; grid1 = False; grid2 = False; columns 
 from math import floor
 import os
 import json
-import PySimpleGUI as sg
+import nicegui as ui
 
 sg.theme('DarkBlack')
 

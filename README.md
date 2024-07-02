@@ -421,9 +421,9 @@ This allows the user to skip the setup and start running the game faster.
 See [Config](https://github.com/ProductionEXP/Unfair-Trivia/tree/main#Config) for more information, and how to set up this file.
 
 ---
-### [V4.1 - Playing the UI update](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
-###### Release Date: 11/28/2023
+### [V5 - New UI Syste,](https://github.com/ProductionEXP/Unfair-Trivia/releases/tag/V4.1)
+###### Release Date: ?
 ###### Contubitors: [ProductionEXP](https://github.com/ProductionEXP)
-###### Special thanks: [PySimpleGUI](https://github.com/PySimpleGUI)
 ##
 
+Due To PySimpleGUI's change to move from a free model, all code will be re-writen with [NiceGUI](https://github.com/zauberzeug/nicegui)
